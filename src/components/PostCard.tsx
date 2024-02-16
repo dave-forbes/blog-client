@@ -10,17 +10,23 @@ const PostCard = () => {
           pos="absolute"
           bg="lightBg"
           p={10}
-          bottom="-70px"
           w="75%"
+          bottom="-5px"
           direction="column"
           gap={4}
         >
           <Heading fontSize="1.5rem">Title of blog post.</Heading>
-          <Text>
-            An excerpt of the blog post, some more words until finally it cuts
-            off with an ellipsis...
-          </Text>
-          <Text>author - date</Text>
+          {window.innerWidth > 768 ? (
+            <>
+              <Text>
+                An excerpt of the blog post, some more words until finally it
+                cuts off with an ellipsis...
+              </Text>
+              <Text>author - date</Text>
+            </>
+          ) : (
+            ""
+          )}
         </Flex>
       </Flex>
     </GridItem>
