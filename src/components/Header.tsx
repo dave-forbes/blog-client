@@ -43,7 +43,7 @@ function Header() {
       >
         <Box>
           <Box>
-            <Link href="#" fontSize="xl" fontWeight="bold">
+            <Link href="/" fontSize="xl" fontWeight="bold">
               <Heading>climbtribe</Heading>
             </Link>
           </Box>
