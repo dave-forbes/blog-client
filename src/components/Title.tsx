@@ -2,7 +2,7 @@ import { Box, Heading, Text } from "@chakra-ui/react";
 
 const Title = () => {
   return (
-    <Box m={4}>
+    <Box mx={4}>
       <Heading as="h1" size="4xl" color="headerText">
         Are you obssesed with climbing as well?
       </Heading>
