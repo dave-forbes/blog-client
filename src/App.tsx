@@ -1,17 +1,18 @@
-import { Heading, Box, Image, Text } from "@chakra-ui/react";
+import { Heading, Box, Text, Grid, Flex, Button } from "@chakra-ui/react";
 import Header from "./components/Header";
-import image from "./assets/jef-willemyns-mluUYXoTotY-unsplash.jpg";
+import FeaturedPost from "./components/FeaturedPost";
+import PostCard from "./components/PostCard";
 
 function App() {
   return (
-    <Box bg="light">
+    <Box bg="lightBg">
       <Box maxW="1200px" mx="auto">
         {/* HEADER */}
         <Header />
         {/* TITLE */}
-        <Box mt="4rem" p={4}>
-          <Heading as="h1" size="4xl" color="headerText" w={[400, 500, 600]}>
-            WELCOME TO CLIMBTRIBE.
+        <Box m={4}>
+          <Heading as="h1" size="4xl" color="headerText" w={[600, 700, 800]}>
+            Are you obssesed with climbing as well?
           </Heading>
           <Text
             fontSize="xl"
@@ -20,7 +21,7 @@ function App() {
             pl="0.5rem"
             pt="1rem"
           >
-            Blog articles about climbing.
+            Read some blog articles about climbing.
           </Text>
         </Box>
         {/* DIVIDER */}
@@ -28,34 +29,61 @@ function App() {
           borderTop="1px"
           borderColor="borderColor"
           opacity="0.5"
-          m="10px 0"
+          m={4}
         ></Box>
         {/* FEATURED POST */}
-        <Box pos="relative">
-          <Image src={image} h="500px" w="100%" objectFit="cover"></Image>
-          <Box
-            bg="light"
-            pos="absolute"
-            bottom="0"
-            w="400px"
-            left="100px"
-            p="2rem"
-          >
-            <Heading color="headerText">Climbing in a Changing Climate</Heading>
-            <Text
-              fontSize="xl"
-              fontWeight="500"
-              color="headerText"
-              pl="0.5rem"
-              pt="1rem"
-            >
-              Navigating the Impact of Environmental Shifts on the Climbing
-              Community
+        <FeaturedPost />
+        {/* POSTS */}
+        <Grid
+          p="4rem 2rem"
+          templateColumns="1fr 1fr"
+          rowGap="4rem"
+          justifyItems="center"
+        >
+          <PostCard />
+          <PostCard />
+          <PostCard />
+          <PostCard />
+          <PostCard />
+          <PostCard />
+        </Grid>
+        {/* Footer */}
+        <Flex
+          h="300px"
+          bg="mediumBg"
+          direction="column"
+          justify="space-around"
+          mt={10}
+        >
+          <Box>
+            <Flex justify="center">
+              <p>Sign up to our newsletter</p>
+              <input></input>
+              <Button>Sign up</Button>
+            </Flex>
+          </Box>
+          <Box>
+            <Box>
+              <Flex justify="space-evenly">
+                <Text>Overview</Text>
+                <Text>Licence</Text>
+                <Text>Documentation</Text>
+                <Text>Social</Text>
+              </Flex>
+            </Box>
+            <Box
+              borderTop="1px"
+              borderColor="borderColor"
+              opacity="0.5"
+              m="10px 0"
+              w="90%"
+              mx="auto"
+            ></Box>
+            <Text align="center" color="lightText">
+              @ All rights reserved, copyright bollocks...
             </Text>
           </Box>
-        </Box>
-        {/* POSTS */}
-        <Box h="1200px"></Box>
+        </Flex>
       </Box>
     </Box>
   );
