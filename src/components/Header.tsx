@@ -22,6 +22,7 @@ function Header() {
 
   return (
     <Box
+      as="header"
       position="fixed"
       top={0}
       left={0}
