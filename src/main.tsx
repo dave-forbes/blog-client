@@ -1,6 +1,6 @@
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import ReactDOM from "react-dom";
-import App from "./App";
+import Router from "./router";
 
 // Define custom theme
 const theme = extendTheme({
@@ -19,7 +19,7 @@ const theme = extendTheme({
 
 ReactDOM.render(
   <ChakraProvider theme={theme}>
-    <App />
+    <Router />
   </ChakraProvider>,
   document.getElementById("root")
 );

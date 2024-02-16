@@ -1,11 +1,8 @@
 import { Box } from "@chakra-ui/react";
 import Header from "./components/Header";
-import FeaturedPost from "./components/FeaturedPost";
 import { useEffect, useState } from "react";
-import Divider from "./components/Divider";
-import Title from "./components/Title";
-import Posts from "./components/Posts";
 import Footer from "./components/Footer";
+import { Outlet } from "react-router-dom";
 
 function App() {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -26,19 +23,8 @@ function App() {
         <Box as="section" my={10}>
           <Header />
         </Box>
-        <Box as="section" my={10}>
-          <Title />
-        </Box>
-        <Box as="section" my={10}>
-          <Divider />
-        </Box>
-        <Box as="section" my={10}>
-          <FeaturedPost />
-        </Box>
-        <Box as="section" my={10}>
-          <Posts />
-        </Box>
       </Box>
+      <Outlet />
       <Box as="section" mt={10} bg="mediumBg">
         <Box maxW="1200px" mx="auto">
           <Footer />
