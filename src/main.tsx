@@ -10,7 +10,8 @@ const theme = extendTheme({
   },
   colors: {
     light: "rgb(254 253 251)",
-    headerText: "rgb(39 56 70)",
+    headerText: "#2e4456",
+    borderColor: "#c9c8c8",
   },
 });
 
