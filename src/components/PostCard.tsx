@@ -1,18 +1,11 @@
-import { Box, Flex, GridItem, Heading, Text } from "@chakra-ui/react";
+import { Image, Flex, GridItem, Heading, Text } from "@chakra-ui/react";
+import image from "../assets/jef-willemyns-mluUYXoTotY-unsplash.jpg";
 
 const PostCard = () => {
   return (
-    <GridItem>
-      <Flex
-        direction="column"
-        w="500px"
-        h="300px"
-        border="1px"
-        align="center"
-        justify="center"
-        pos="relative"
-      >
-        <Box bg="headerText" w="100%" h="100%"></Box>
+    <GridItem w="100%" h="100%">
+      <Flex direction="column" align="center" justify="center" pos="relative">
+        <Image src={image} w="100%" h="auto" objectFit="cover"></Image>
         <Flex
           pos="absolute"
           bg="lightBg"
