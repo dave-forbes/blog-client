@@ -36,8 +36,9 @@ function App() {
         {/* POSTS */}
         <Grid
           p="4rem 2rem"
-          templateColumns="1fr 1fr"
-          rowGap="4rem"
+          templateColumns="repeat(auto-fit, minmax(400px, 1fr))"
+          // templateColumns="1fr 1fr"
+          gap="4rem"
           justifyItems="center"
         >
           <PostCard />
