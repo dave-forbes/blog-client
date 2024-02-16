@@ -38,7 +38,7 @@ function Header() {
         justify="space-between"
         wrap="wrap"
         px={6}
-        py={4}
+        pt={4}
         color="headerText"
       >
         <Box>
