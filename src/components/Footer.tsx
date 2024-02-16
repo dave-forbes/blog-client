@@ -1,8 +1,9 @@
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import Divider from "./Divider";
 
 const Footer = () => {
   return (
-    <Flex p={10} gap={10} direction="column" justify="space-around">
+    <Flex py={10} gap={10} direction="column" justify="space-around">
       <Box>
         <Flex justify="center">
           <p>Sign up to our newsletter</p>
@@ -19,14 +20,7 @@ const Footer = () => {
             <Text>Social</Text>
           </Flex>
         </Box>
-        <Box
-          borderTop="1px"
-          borderColor="borderColor"
-          opacity="0.5"
-          m="10px 0"
-          w="90%"
-          mx="auto"
-        ></Box>
+        <Divider />
         <Text align="center" color="lightText">
           @ All rights reserved, copyright bollocks...
         </Text>
