@@ -5,14 +5,7 @@ const FeaturedPost = () => {
   return (
     <Box pos="relative">
       <Image src={image} h="500px" w="100%" objectFit="cover"></Image>
-      <Box
-        bg="lightBg"
-        pos="absolute"
-        bottom="0"
-        w="400px"
-        left="100px"
-        p="2rem"
-      >
+      <Box bg="lightBg" pos="absolute" bottom="0" p={5} m={5}>
         <Heading color="headerText">Climbing in a Changing Climate</Heading>
         <Text
           fontSize="xl"
