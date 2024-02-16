@@ -17,6 +17,7 @@ const Header = () => {
           <Button colorScheme="blue">Login</Button>
         </Box>
       </Flex>
+      <Box borderTop="1px" borderColor="borderColor" opacity="0.5" m={4}></Box>
     </Box>
   );
 };
