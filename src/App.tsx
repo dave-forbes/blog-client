@@ -2,16 +2,30 @@ import { Heading, Box, Text, Grid, Flex, Button } from "@chakra-ui/react";
 import Header from "./components/Header";
 import FeaturedPost from "./components/FeaturedPost";
 import PostCard from "./components/PostCard";
+import { useEffect, useState } from "react";
+import Divider from "./components/Divider";
 
 function App() {
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  const handleResize = () => {
+    setWindowWidth(window.innerWidth);
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
   return (
     <Box bg="lightBg">
-      <Box maxW="1200px" mx="auto">
+      <Box maxW="1200px" mx="auto" pt="73">
         {/* HEADER */}
         <Header />
         {/* TITLE */}
         <Box m={4}>
-          <Heading as="h1" size="4xl" color="headerText" w={[600, 700, 800]}>
+          <Heading as="h1" size="4xl" color="headerText">
             Are you obssesed with climbing as well?
           </Heading>
           <Text
@@ -25,19 +39,17 @@ function App() {
           </Text>
         </Box>
         {/* DIVIDER */}
-        <Box
-          borderTop="1px"
-          borderColor="borderColor"
-          opacity="0.5"
-          m={4}
-        ></Box>
+        <Divider />
         {/* FEATURED POST */}
         <FeaturedPost />
         {/* POSTS */}
         <Grid
-          p="4rem 2rem"
-          templateColumns="repeat(auto-fit, minmax(400px, 1fr))"
-          // templateColumns="1fr 1fr"
+          m="4rem 0"
+          templateColumns={
+            windowWidth > 768
+              ? "repeat(auto-fill, minmax(400px, 1fr))"
+              : "repeat(auto-fill, minmax(320px, 1fr))"
+          }
           gap="4rem"
           justifyItems="center"
         >
