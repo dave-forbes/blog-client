@@ -11,7 +11,12 @@ import {
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import Divider from "./Divider";
 
-function Header() {
+interface HeaderProps {
+  isLoggedIn: boolean;
+  logout: () => void;
+}
+
+function Header({ isLoggedIn, logout }: HeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const showBurgerMenu = useBreakpointValue({ base: true, md: false });
@@ -58,10 +63,23 @@ function Header() {
           />
         ) : (
           <Box>
-            <Link href="#" mr={4}>
-              Sign Up
-            </Link>
-            <Button colorScheme="blue">Login</Button>
+            {isLoggedIn ? (
+              <Flex align="center" gap={5}>
+                <p>Logged In!</p>
+                <Button onClick={logout} colorScheme="blue">
+                  Logout
+                </Button>
+              </Flex>
+            ) : (
+              <>
+                <Link href="/register" mr={4}>
+                  Sign Up
+                </Link>
+                <Link href="/log-in">
+                  <Button colorScheme="blue">Login</Button>
+                </Link>
+              </>
+            )}
           </Box>
         )}
         {/* Render menu items */}
