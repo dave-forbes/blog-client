@@ -6,7 +6,7 @@ import { Outlet } from "react-router-dom";
 import { JwtPayload, jwtDecode } from "jwt-decode";
 
 function App() {
-  const [isloggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   const handleResize = () => {
@@ -50,7 +50,7 @@ function App() {
       <Box maxW="1200px" mx="auto" pt="73px">
         <Box as="section" my={10}>
           <Header
-            isLoggedIn={isloggedIn}
+            isLoggedIn={isLoggedIn}
             logout={() => {
               localStorage.removeItem("token");
               setIsLoggedIn(false);
@@ -58,7 +58,7 @@ function App() {
           />
         </Box>
       </Box>
-      <Outlet context={setIsLoggedIn} />
+      <Outlet context={[isLoggedIn, setIsLoggedIn]} />
       <Box as="section" mt={10} bg="mediumBg">
         <Box maxW="1200px" mx="auto">
           <Footer />
