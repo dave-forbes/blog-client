@@ -13,7 +13,7 @@ const Title = () => {
         pl="0.5rem"
         pt="1rem"
       >
-        Read some blog articles about climbing.
+        Read some blog articles about climbing and join the discussion.
       </Text>
     </Box>
   );
