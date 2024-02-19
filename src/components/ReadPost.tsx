@@ -39,12 +39,12 @@ const ReadPost = () => {
               <strong>David Forbes</strong> - Mon 19th Feb 2024
             </Text>
           </Flex>
-          <Text fontSize="xl" fontWeight="500" color="headerText">
+          {/* <Text fontSize="xl" fontWeight="500" color="headerText">
             <em>
               Navigating the Impact of Environmental Shifts on the Climbing
               Community
             </em>
-          </Text>
+          </Text> */}
           <Text fontSize="lg">
             As climbers, we are intimately connected to the natural world. From
             scaling majestic rock faces to ascending icy peaks, our pursuits
