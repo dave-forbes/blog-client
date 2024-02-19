@@ -31,3 +31,12 @@ export interface UserI {
   updatedAt: Date;
   __v: number;
 }
+
+export interface CommentI {
+  text: string;
+  user: UserI;
+  post: PostI;
+  createdAt: Date;
+  updatedAt: Date;
+  _id: string;
+}
