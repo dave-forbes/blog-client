@@ -1,4 +1,4 @@
-import { Grid, Box, useBreakpointValue } from "@chakra-ui/react";
+import { Grid, Box, useBreakpointValue, Flex, Spinner } from "@chakra-ui/react";
 import PostCard from "./PostCard";
 import FeaturedPost from "./FeaturedPost";
 import { useEffect, useState } from "react";
@@ -8,6 +8,7 @@ const Posts = () => {
   const smallScreen = useBreakpointValue({ base: true, lg: false });
   const [posts, setPosts] = useState<PostI[]>([]);
   const [featuredPost, setFeaturedPost] = useState<FeaturedPostI | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -26,41 +27,37 @@ const Posts = () => {
         }
         const data = await response.json();
 
-        // Find the index of the featured post
+        // Extract the featured post
         const featuredPostIndex = data.findIndex(
           (post: { featured: FeaturedPostI }) => post.featured
         );
-
-        // Extract the featured post
         const featuredPost =
           featuredPostIndex !== -1
             ? data.splice(featuredPostIndex, 1)[0]
             : null;
 
-        // Set the posts state without the featured post
         setPosts(data);
-        console.log(data);
-
-        // Set the featured post state
         setFeaturedPost(featuredPost);
-        console.log(featuredPost);
-        return data;
+        setLoading(false);
       } catch (error) {
         console.error(error);
-        // Handle error
       }
     };
     fetchPosts();
   }, []);
 
+  if (loading) {
+    return (
+      <Flex justify="center" h="100vh" pt="20vh">
+        <Spinner size="xl" />
+      </Flex>
+    );
+  }
+
   return (
     <>
       <Box as="section" my={10}>
-        <FeaturedPost
-          title={featuredPost ? featuredPost.title : ""}
-          text={featuredPost ? featuredPost.text : ""}
-          _id={featuredPost ? featuredPost._id : ""}
-        />
+        <FeaturedPost post={featuredPost} />
       </Box>
       <Box as="section" my={10}>
         <Grid
