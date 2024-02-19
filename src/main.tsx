@@ -6,7 +6,7 @@ import Router from "./router";
 // Define custom theme
 const theme = extendTheme({
   fonts: {
-    body: "inter, sans-serif", // Default font for body text
+    body: "Gilda Display, sans-serif", // Default font for body text
     heading: "Gilda Display, sans-serif", // Default font for headings
   },
   colors: {
