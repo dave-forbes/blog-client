@@ -5,6 +5,8 @@ import {
   Flex,
   useBreakpointValue,
   Spinner,
+  Link,
+  Button,
 } from "@chakra-ui/react";
 import image from "../assets/jef-willemyns-mluUYXoTotY-unsplash.jpg";
 import Divider from "./Divider";
@@ -12,6 +14,8 @@ import Comment from "./Comment";
 import { useParams } from "react-router-dom";
 import { PostI, CommentI } from "../interfaces";
 import { useEffect, useState } from "react";
+import { useAuth } from "../authContext";
+import CreateCommentForm from "./CreateCommentForm";
 
 const ReadPost = () => {
   const [post, setPost] = useState<PostI>();
@@ -20,6 +24,7 @@ const ReadPost = () => {
   const [commentsLoading, setCommentsLoading] = useState(true);
   const { postId } = useParams();
   const [error, setError] = useState(false);
+  const { isLoggedIn } = useAuth();
 
   // fetch post
 
@@ -52,31 +57,32 @@ const ReadPost = () => {
 
   // fetch post comments
 
-  useEffect(() => {
-    const fetchComments = async () => {
-      try {
-        const response = await fetch(
-          `https://blog-api-production-7c83.up.railway.app/comments/${postId}`,
-          {
-            method: "GET",
-            mode: "cors",
-            cache: "no-cache",
-            referrerPolicy: "no-referrer",
-          }
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch comments");
+  const fetchComments = async () => {
+    try {
+      const response = await fetch(
+        `https://blog-api-production-7c83.up.railway.app/comments/${postId}`,
+        {
+          method: "GET",
+          mode: "cors",
+          cache: "no-cache",
+          referrerPolicy: "no-referrer",
         }
-        const comments = await response.json();
-        comments.map((comment: CommentI) => {
-          comment.createdAt = new Date(comment.createdAt);
-        });
-        setComments(comments);
-        setCommentsLoading(false);
-      } catch (error) {
-        setError(true);
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch comments");
       }
-    };
+      const comments = await response.json();
+      comments.map((comment: CommentI) => {
+        comment.createdAt = new Date(comment.createdAt);
+      });
+      setComments(comments);
+      setCommentsLoading(false);
+    } catch (error) {
+      setError(true);
+    }
+  };
+
+  useEffect(() => {
     fetchComments();
   }, []);
 
@@ -151,7 +157,6 @@ const ReadPost = () => {
         >
           <Flex direction="column" align="center" justify="center" gap={1}>
             <Heading fontSize="3xl">Comments</Heading>
-            <Text>Join the discusion.</Text>
           </Flex>
           {commentsLoading ? (
             <Flex justify="center" align="center" h="10vh">
@@ -159,10 +164,26 @@ const ReadPost = () => {
             </Flex>
           ) : (
             <>
-              {comments.map((comment: CommentI) => (
-                <Comment key={comment._id} comment={comment} />
-              ))}
+              {comments.length !== 0 ? (
+                <>
+                  {comments.map((comment: CommentI) => (
+                    <Comment key={comment._id} comment={comment} />
+                  ))}
+                </>
+              ) : (
+                <Text textAlign="center">No comments yet, be the first!</Text>
+              )}
             </>
+          )}
+          {isLoggedIn ? (
+            <CreateCommentForm postId={postId} fetchComments={fetchComments} />
+          ) : (
+            <Flex direction="column" align="center" justify="center" gap={3}>
+              <Text>You need to be logged in to write comments.</Text>
+              <Link href="/log-in">
+                <Button>Log in</Button>
+              </Link>
+            </Flex>
           )}
         </Flex>
       </Flex>
