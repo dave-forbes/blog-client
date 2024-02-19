@@ -5,6 +5,8 @@ import {
   Heading,
   Text,
   useBreakpointValue,
+  LinkBox,
+  LinkOverlay,
 } from "@chakra-ui/react";
 import image from "../assets/jef-willemyns-mluUYXoTotY-unsplash.jpg";
 import { UserI } from "../interfaces";
@@ -14,9 +16,10 @@ interface PostCardProps {
   text: string;
   user: UserI;
   createdAt: Date;
+  _id: string;
 }
 
-const PostCard = ({ title, text, user }: PostCardProps) => {
+const PostCard = ({ title, text, user, _id }: PostCardProps) => {
   const smallScreen = useBreakpointValue({ base: true, lg: false });
 
   const shortenedText = (string: string): string =>
@@ -26,30 +29,39 @@ const PostCard = ({ title, text, user }: PostCardProps) => {
 
   return (
     <GridItem w="100%" h="100%">
-      <Flex direction="column" align="center" justify="center" pos="relative">
-        <Image src={image} w="100%" h="auto" objectFit="cover"></Image>
-        <Flex
-          pos="absolute"
-          bg="lightBg"
-          p={10}
-          w="75%"
-          bottom="-5px"
-          direction="column"
-          gap={4}
-        >
-          <Heading fontSize="1.5rem">{title}</Heading>
-          {!smallScreen ? (
-            <>
-              <Text>{summary}</Text>
-              <Text>
-                <strong>{user.username}</strong> - date
-              </Text>
-            </>
-          ) : (
-            ""
-          )}
-        </Flex>
-      </Flex>
+      <LinkBox pos="relative">
+        <LinkOverlay href={"/posts/" + _id}>
+          <Flex
+            direction="column"
+            align="center"
+            justify="center"
+            pos="relative"
+          >
+            <Image src={image} w="100%" h="auto" objectFit="cover"></Image>
+            <Flex
+              pos="absolute"
+              bg="lightBg"
+              p={10}
+              w="75%"
+              bottom="-5px"
+              direction="column"
+              gap={4}
+            >
+              <Heading fontSize="1.5rem">{title}</Heading>
+              {!smallScreen ? (
+                <>
+                  <Text>{summary}</Text>
+                  <Text>
+                    <strong>{user.username}</strong> - date
+                  </Text>
+                </>
+              ) : (
+                ""
+              )}
+            </Flex>
+          </Flex>
+        </LinkOverlay>
+      </LinkBox>
     </GridItem>
   );
 };
