@@ -7,7 +7,7 @@ const Error = () => {
     <Flex bg="lightBg" direction="column" h="100vh">
       <Box maxW="1200px" mx="auto" pt="73px">
         <Box as="section" my={10}>
-          <Header isLoggedIn={false} logout={() => {}} />
+          <Header logout={() => {}} />
         </Box>
       </Box>
       <Flex flex="1" direction="column" align="center" justify="center">
