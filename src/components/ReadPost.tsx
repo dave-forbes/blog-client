@@ -5,7 +5,7 @@ import {
   Flex,
   Center,
   useBreakpointValue,
-  SkeletonText,
+  Spinner,
 } from "@chakra-ui/react";
 import image from "../assets/jef-willemyns-mluUYXoTotY-unsplash.jpg";
 import Divider from "./Divider";
@@ -49,6 +49,14 @@ const ReadPost = () => {
 
   const smallScreen = useBreakpointValue({ base: true, md: false });
 
+  if (loading) {
+    return (
+      <Flex justify="center" align="center" h="100vh">
+        <Spinner size="xl" />
+      </Flex>
+    );
+  }
+
   return (
     <>
       <Flex
@@ -90,11 +98,10 @@ const ReadPost = () => {
               Community
             </em>
           </Text> */}
-          <SkeletonText isLoaded={!loading} noOfLines={80} spacing="4">
-            <Text fontSize="lg" whiteSpace="pre-wrap">
-              {post ? post.text : ""}
-            </Text>
-          </SkeletonText>
+
+          <Text fontSize="lg" whiteSpace="pre-wrap">
+            {post ? post.text : ""}
+          </Text>
         </Flex>
       </Flex>
       <Flex direction="column" maxW="1200px" mx="auto" gap={5}>
