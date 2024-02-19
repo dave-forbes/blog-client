@@ -84,17 +84,28 @@ function Header({ isLoggedIn, logout }: HeaderProps) {
             )}
           </Box>
         )}
-        {/* Render menu items */}
         {isOpen && (
           <Flex align="center" w="100%" gap={5} direction="column" m={5}>
-            <Link href="/register" textAlign="center">
-              <Button colorScheme="blue" variant="outline">
-                Sign Up
-              </Button>
-            </Link>
-            <Link href="/log-in" w="50%" textAlign="center">
-              <Button colorScheme="blue">Login</Button>
-            </Link>
+            {isLoggedIn ? (
+              <Flex align="center" direction="column" gap={5}>
+                <p>Logged In!</p>
+                {/* You can also display an icon here if you prefer */}
+                <Button onClick={logout} colorScheme="blue">
+                  Logout
+                </Button>
+              </Flex>
+            ) : (
+              <>
+                <Link href="/register" textAlign="center">
+                  <Button colorScheme="blue" variant="outline">
+                    Sign Up
+                  </Button>
+                </Link>
+                <Link href="/log-in" w="50%" textAlign="center">
+                  <Button colorScheme="blue">Login</Button>
+                </Link>
+              </>
+            )}
           </Flex>
         )}
       </Flex>
