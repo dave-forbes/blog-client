@@ -46,35 +46,40 @@ const Register = () => {
   };
 
   return (
-    <Flex align="center" justify="center" height="100vh">
+    <Flex align="center" justify="center" height="60vh">
       <form onSubmit={handleSubmit}>
-        <FormControl id="username" isRequired>
-          <FormLabel>Username</FormLabel>
-          <Input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </FormControl>
-        <FormControl id="password" isRequired mt={4}>
-          <FormLabel>Password</FormLabel>
-          <Input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </FormControl>
-        <FormControl id="confirmPassword" isRequired mt={4}>
-          <FormLabel>Confirm Password</FormLabel>
-          <Input
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
-        </FormControl>
-        <Button type="submit" colorScheme="teal" mt={4}>
-          Sign Up
-        </Button>
+        <Flex direction="column">
+          <FormControl id="username" isRequired>
+            <FormLabel>Username</FormLabel>
+            <Input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              bg="white"
+            />
+          </FormControl>
+          <FormControl id="password" isRequired mt={4}>
+            <FormLabel>Password</FormLabel>
+            <Input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              bg="white"
+            />
+          </FormControl>
+          <FormControl id="confirmPassword" isRequired mt={4}>
+            <FormLabel>Confirm Password</FormLabel>
+            <Input
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              bg="white"
+            />
+          </FormControl>
+          <Button type="submit" colorScheme="teal" mt={4}>
+            Sign Up
+          </Button>
+        </Flex>
       </form>
     </Flex>
   );
