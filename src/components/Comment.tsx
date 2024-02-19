@@ -1,23 +1,33 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { AtSignIcon } from "@chakra-ui/icons";
+import { CommentI } from "../interfaces";
 
 interface CommentProps {
-  commentText: string;
+  comment: CommentI;
 }
 
-const Comment = ({ commentText }: CommentProps) => {
+const Comment = ({ comment }: CommentProps) => {
+  const date = new Date(comment.createdAt);
+
   return (
     <Box>
-      <Flex justify="space-between">
+      <Flex justify="space-between" align="center">
         <Flex align="center">
           <AtSignIcon />
           <Text>
-            <strong>Username</strong>
+            <strong>{comment.user.username}</strong> -
           </Text>
         </Flex>
-        <Text>Date</Text>
+        <Text fontSize="xs">
+          {date.toLocaleString("en-gb", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })}
+        </Text>
       </Flex>
-      <Text>{commentText}</Text>
+      <Text>{comment.text}</Text>
     </Box>
   );
 };
