@@ -7,9 +7,23 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 import image from "../assets/jef-willemyns-mluUYXoTotY-unsplash.jpg";
+import { UserI } from "../interfaces";
 
-const PostCard = () => {
+interface PostCardProps {
+  title: string;
+  text: string;
+  user: UserI;
+  createdAt: Date;
+}
+
+const PostCard = ({ title, text, user }: PostCardProps) => {
   const smallScreen = useBreakpointValue({ base: true, lg: false });
+
+  const shortenedText = (string: string): string =>
+    string.slice(0, 80).concat("...");
+
+  const summary = shortenedText(text);
+
   return (
     <GridItem w="100%" h="100%">
       <Flex direction="column" align="center" justify="center" pos="relative">
@@ -23,15 +37,12 @@ const PostCard = () => {
           direction="column"
           gap={4}
         >
-          <Heading fontSize="1.5rem">Title of blog post.</Heading>
+          <Heading fontSize="1.5rem">{title}</Heading>
           {!smallScreen ? (
             <>
+              <Text>{summary}</Text>
               <Text>
-                An excerpt of the blog post, some more words until finally it
-                cuts off with an ellipsis...
-              </Text>
-              <Text>
-                <strong>author</strong> - date
+                <strong>{user.username}</strong> - date
               </Text>
             </>
           ) : (
