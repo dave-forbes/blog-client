@@ -7,14 +7,15 @@ import {
   Button,
   Text,
 } from "@chakra-ui/react";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../authContext";
 
 const Login = () => {
   const [error, setError] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const setIsLoggedIn: (param: Boolean) => void = useOutletContext();
+  const { setIsLoggedIn } = useAuth();
 
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();

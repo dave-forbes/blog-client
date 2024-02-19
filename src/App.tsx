@@ -4,9 +4,10 @@ import { useEffect, useState } from "react";
 import Footer from "./components/Footer";
 import { Outlet } from "react-router-dom";
 import { JwtPayload, jwtDecode } from "jwt-decode";
+import { useAuth } from "./authContext";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { isLoggedIn, setIsLoggedIn } = useAuth();
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   const handleResize = () => {
