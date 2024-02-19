@@ -73,7 +73,9 @@ function Header({ isLoggedIn, logout }: HeaderProps) {
             ) : (
               <>
                 <Link href="/register" mr={4}>
-                  Sign Up
+                  <Button colorScheme="blue" variant="outline">
+                    Sign Up
+                  </Button>
                 </Link>
                 <Link href="/log-in">
                   <Button colorScheme="blue">Login</Button>
@@ -85,12 +87,14 @@ function Header({ isLoggedIn, logout }: HeaderProps) {
         {/* Render menu items */}
         {isOpen && (
           <Flex align="center" w="100%" gap={5} direction="column" m={5}>
-            <Link w="50%" href="#" mr={4} textAlign="center">
-              Sign Up
+            <Link href="/register" textAlign="center">
+              <Button colorScheme="blue" variant="outline">
+                Sign Up
+              </Button>
             </Link>
-            <Button w="50%" colorScheme="blue">
-              Login
-            </Button>
+            <Link href="/log-in" w="50%" textAlign="center">
+              <Button colorScheme="blue">Login</Button>
+            </Link>
           </Flex>
         )}
       </Flex>
