@@ -22,7 +22,9 @@ const PostCard = () => {
                 An excerpt of the blog post, some more words until finally it
                 cuts off with an ellipsis...
               </Text>
-              <Text>author - date</Text>
+              <Text>
+                <strong>author</strong> - date
+              </Text>
             </>
           ) : (
             ""
