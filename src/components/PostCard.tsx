@@ -1,7 +1,15 @@
-import { Image, Flex, GridItem, Heading, Text } from "@chakra-ui/react";
+import {
+  Image,
+  Flex,
+  GridItem,
+  Heading,
+  Text,
+  useBreakpointValue,
+} from "@chakra-ui/react";
 import image from "../assets/jef-willemyns-mluUYXoTotY-unsplash.jpg";
 
 const PostCard = () => {
+  const smallScreen = useBreakpointValue({ base: true, lg: false });
   return (
     <GridItem w="100%" h="100%">
       <Flex direction="column" align="center" justify="center" pos="relative">
@@ -16,7 +24,7 @@ const PostCard = () => {
           gap={4}
         >
           <Heading fontSize="1.5rem">Title of blog post.</Heading>
-          {window.innerWidth > 768 ? (
+          {!smallScreen ? (
             <>
               <Text>
                 An excerpt of the blog post, some more words until finally it
