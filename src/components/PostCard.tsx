@@ -48,8 +48,11 @@ const PostCard = ({ title, text, user, _id, createdAt }: PostCardProps) => {
               bottom="-5px"
               direction="column"
               gap={4}
+              align="center"
             >
-              <Heading fontSize="1.5rem">{title}</Heading>
+              <Heading textAlign="center" fontSize="1.5rem">
+                {title}
+              </Heading>
               {!smallScreen ? (
                 <>
                   <Text>{summary}</Text>
