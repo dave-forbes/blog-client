@@ -52,7 +52,7 @@ const Login = () => {
       console.log(data);
       localStorage.setItem("token", data.token);
       setIsLoggedIn(true);
-      navigate("/");
+      navigate(-1);
     } catch (error) {
       console.error("There was a problem with the fetch operation:", error);
     }
