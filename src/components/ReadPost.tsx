@@ -3,7 +3,6 @@ import {
   Text,
   Image,
   Flex,
-  Center,
   useBreakpointValue,
   Spinner,
 } from "@chakra-ui/react";
@@ -16,11 +15,13 @@ import { useEffect, useState } from "react";
 
 const ReadPost = () => {
   const [post, setPost] = useState<PostI>();
-  const [loading, setLoading] = useState(true);
+  const [postLoading, setPostLoading] = useState(true);
   const { postId } = useParams();
 
+  // fetch post
+
   useEffect(() => {
-    const fetchPosts = async () => {
+    const fetchPost = async () => {
       try {
         const response = await fetch(
           `https://blog-api-production-7c83.up.railway.app/posts/read/${postId}`,
@@ -38,18 +39,20 @@ const ReadPost = () => {
         post.createdAt = new Date(post.createdAt);
 
         setPost(post);
-        setLoading(false);
+        setPostLoading(false);
       } catch (error) {
         console.error(error);
         // Handle error
       }
     };
-    fetchPosts();
+    fetchPost();
   }, []);
+
+  // fetch post comments
 
   const smallScreen = useBreakpointValue({ base: true, md: false });
 
-  if (loading) {
+  if (postLoading) {
     return (
       <Flex justify="center" align="center" h="100vh">
         <Spinner size="xl" />
@@ -114,9 +117,10 @@ const ReadPost = () => {
           direction="column"
           gap={5}
         >
-          <Center>
+          <Flex direction="column" align="center" justify="center" gap={1}>
             <Heading fontSize="3xl">Comments</Heading>
-          </Center>
+            <Text>Join the discusion.</Text>
+          </Flex>
           <Comment
             commentText={
               "A really long comment with lots of content, really just going on and on about how good this articale was and a bit more. Even more text added on now."
