@@ -11,9 +11,10 @@ import image from "../assets/jef-willemyns-mluUYXoTotY-unsplash.jpg";
 interface FeaturePostProps {
   title: string;
   text: string;
+  _id: string;
 }
 
-const FeaturedPost = ({ title, text }: FeaturePostProps) => {
+const FeaturedPost = ({ title, text, _id }: FeaturePostProps) => {
   const extractFirstSentence = (text: string): string => {
     const sentences = text.replace("Introduction:", "").split(".");
     const firstSentence = sentences[0].trim();
@@ -23,7 +24,7 @@ const FeaturedPost = ({ title, text }: FeaturePostProps) => {
 
   return (
     <LinkBox pos="relative">
-      <LinkOverlay href="/posts/1">
+      <LinkOverlay href={"/posts/" + _id}>
         <Image src={image} h="500px" w="100%" objectFit="cover"></Image>
         <Box bg="lightBg" pos="absolute" bottom="0" p={5} m={5}>
           <Heading color="headerText">{title}</Heading>

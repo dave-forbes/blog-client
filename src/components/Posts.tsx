@@ -2,7 +2,7 @@ import { Grid, Box, useBreakpointValue } from "@chakra-ui/react";
 import PostCard from "./PostCard";
 import FeaturedPost from "./FeaturedPost";
 import { useEffect, useState } from "react";
-import { PostI, FeaturedPostI, UserI } from "../interfaces";
+import { PostI, FeaturedPostI } from "../interfaces";
 
 const Posts = () => {
   const smallScreen = useBreakpointValue({ base: true, lg: false });
@@ -59,6 +59,7 @@ const Posts = () => {
         <FeaturedPost
           title={featuredPost ? featuredPost.title : ""}
           text={featuredPost ? featuredPost.text : ""}
+          _id={featuredPost ? featuredPost._id : ""}
         />
       </Box>
       <Box as="section" my={10}>
