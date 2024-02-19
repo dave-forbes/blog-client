@@ -10,20 +10,23 @@ import {
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import Divider from "./Divider";
+import { useAuth } from "../authContext";
 
 interface HeaderProps {
-  isLoggedIn: boolean;
   logout: () => void;
 }
 
-function Header({ isLoggedIn, logout }: HeaderProps) {
+function Header({ logout }: HeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const { isLoggedIn } = useAuth();
 
   const showBurgerMenu = useBreakpointValue({ base: true, md: false });
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
+
+  const username = localStorage.getItem("userName");
 
   return (
     <Box
@@ -65,7 +68,7 @@ function Header({ isLoggedIn, logout }: HeaderProps) {
           <Box>
             {isLoggedIn ? (
               <Flex align="center" gap={5}>
-                <p>Logged In!</p>
+                <p>Welcome back, {username}</p>
                 <Button onClick={logout} colorScheme="blue">
                   Logout
                 </Button>
