@@ -19,11 +19,13 @@ interface PostCardProps {
   _id: string;
 }
 
-const PostCard = ({ title, text, user, _id }: PostCardProps) => {
+const PostCard = ({ title, text, user, _id, createdAt }: PostCardProps) => {
   const smallScreen = useBreakpointValue({ base: true, lg: false });
 
   const shortenedText = (string: string): string =>
     string.slice(0, 100).concat("...").replace("Introduction:", "").trim();
+
+  const date = new Date(createdAt);
 
   const summary = shortenedText(text);
 
@@ -52,7 +54,13 @@ const PostCard = ({ title, text, user, _id }: PostCardProps) => {
                 <>
                   <Text>{summary}</Text>
                   <Text>
-                    <strong>{user.username}</strong> - date
+                    <strong>{user.username}</strong> -{" "}
+                    {date.toLocaleString("en-gb", {
+                      weekday: "long",
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
                   </Text>
                 </>
               ) : (
