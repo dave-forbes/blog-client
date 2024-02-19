@@ -3,7 +3,7 @@ import Header from "./components/Header";
 import { useEffect, useState } from "react";
 import Footer from "./components/Footer";
 import { Outlet } from "react-router-dom";
-import { JwtPayload, jwtDecode } from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import { useAuth } from "./authContext";
 
 function App() {
@@ -25,8 +25,11 @@ function App() {
     const token = localStorage.getItem("token");
     if (token) {
       // Decode the token to get its expiration time
-      const decodedToken = jwtDecode<JwtPayload>(token);
+      const decodedToken: { id: string; username: string; exp: number } =
+        jwtDecode(token);
       console.log(decodedToken);
+      localStorage.setItem("userId", decodedToken.id);
+      localStorage.setItem("userName", decodedToken.username);
       if (decodedToken) {
         const expirationTime = decodedToken.exp;
         if (expirationTime) {
@@ -39,6 +42,8 @@ function App() {
           } else {
             // Token expired, clear it from storage and redirect to login
             localStorage.removeItem("token");
+            localStorage.removeItem("userName");
+            localStorage.removeItem("userId");
             setIsLoggedIn(false);
           }
         }
@@ -51,9 +56,10 @@ function App() {
       <Box maxW="1200px" mx="auto" pt="73px">
         <Box as="section" my={10}>
           <Header
-            isLoggedIn={isLoggedIn}
             logout={() => {
               localStorage.removeItem("token");
+              localStorage.removeItem("userName");
+              localStorage.removeItem("userId");
               setIsLoggedIn(false);
             }}
           />
