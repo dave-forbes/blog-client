@@ -78,6 +78,7 @@ const CreateCommentForm = ({ postId, fetchComments }: CreateCommentProps) => {
             resize="none"
             bg="white"
             onChange={(e) => setCommentText(e.target.value)}
+            value={commentText}
           ></Textarea>
           <Button type="submit" w="50%">
             Submit
