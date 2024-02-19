@@ -20,7 +20,7 @@ const PostCard = ({ title, text, user }: PostCardProps) => {
   const smallScreen = useBreakpointValue({ base: true, lg: false });
 
   const shortenedText = (string: string): string =>
-    string.slice(0, 80).concat("...");
+    string.slice(0, 100).concat("...").replace("Introduction:", "").trim();
 
   const summary = shortenedText(text);
 

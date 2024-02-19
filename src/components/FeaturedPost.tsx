@@ -14,16 +14,11 @@ interface FeaturePostProps {
 }
 
 const FeaturedPost = ({ title, text }: FeaturePostProps) => {
-  // Function to extract the first sentence from the text
   const extractFirstSentence = (text: string): string => {
-    // Split text by periods (.)
-    const sentences = text.split(".");
-    // Take the first sentence (remove leading/trailing whitespace)
+    const sentences = text.replace("Introduction:", "").split(".");
     const firstSentence = sentences[0].trim();
     return firstSentence;
   };
-
-  // Calculate summary
   const summary = extractFirstSentence(text);
 
   return (
