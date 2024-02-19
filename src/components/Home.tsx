@@ -1,7 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import Title from "./Title";
 import Divider from "./Divider";
-import FeaturedPost from "./FeaturedPost";
 import Posts from "./Posts";
 
 const Home = () => {
@@ -13,9 +12,6 @@ const Home = () => {
         </Box>
         <Box as="section" my={10}>
           <Divider />
-        </Box>
-        <Box as="section" my={10}>
-          <FeaturedPost />
         </Box>
         <Box as="section" my={10}>
           <Posts />
