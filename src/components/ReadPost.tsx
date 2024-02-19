@@ -10,13 +10,16 @@ import image from "../assets/jef-willemyns-mluUYXoTotY-unsplash.jpg";
 import Divider from "./Divider";
 import Comment from "./Comment";
 import { useParams } from "react-router-dom";
-import { PostI } from "../interfaces";
+import { PostI, CommentI } from "../interfaces";
 import { useEffect, useState } from "react";
 
 const ReadPost = () => {
   const [post, setPost] = useState<PostI>();
   const [postLoading, setPostLoading] = useState(true);
+  const [comments, setComments] = useState<CommentI[]>([]);
+  const [commentsLoading, setCommentsLoading] = useState(true);
   const { postId } = useParams();
+  const [error, setError] = useState(false);
 
   // fetch post
 
@@ -41,8 +44,7 @@ const ReadPost = () => {
         setPost(post);
         setPostLoading(false);
       } catch (error) {
-        console.error(error);
-        // Handle error
+        setError(true);
       }
     };
     fetchPost();
@@ -50,12 +52,48 @@ const ReadPost = () => {
 
   // fetch post comments
 
+  useEffect(() => {
+    const fetchComments = async () => {
+      try {
+        const response = await fetch(
+          `https://blog-api-production-7c83.up.railway.app/comments/${postId}`,
+          {
+            method: "GET",
+            mode: "cors",
+            cache: "no-cache",
+            referrerPolicy: "no-referrer",
+          }
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch comments");
+        }
+        const comments = await response.json();
+        comments.map((comment: CommentI) => {
+          comment.createdAt = new Date(comment.createdAt);
+        });
+        setComments(comments);
+        setCommentsLoading(false);
+      } catch (error) {
+        setError(true);
+      }
+    };
+    fetchComments();
+  }, []);
+
   const smallScreen = useBreakpointValue({ base: true, md: false });
 
   if (postLoading) {
     return (
       <Flex justify="center" align="center" h="100vh">
         <Spinner size="xl" />
+      </Flex>
+    );
+  }
+
+  if (error) {
+    return (
+      <Flex justify="center" align="center" h="100vh">
+        <Text>An error occured...</Text>
       </Flex>
     );
   }
@@ -95,12 +133,6 @@ const ReadPost = () => {
                 : ""}
             </Text>
           </Flex>
-          {/* <Text fontSize="xl" fontWeight="500" color="headerText">
-            <em>
-              Navigating the Impact of Environmental Shifts on the Climbing
-              Community
-            </em>
-          </Text> */}
 
           <Text fontSize="lg" whiteSpace="pre-wrap">
             {post ? post.text : ""}
@@ -121,12 +153,17 @@ const ReadPost = () => {
             <Heading fontSize="3xl">Comments</Heading>
             <Text>Join the discusion.</Text>
           </Flex>
-          <Comment
-            commentText={
-              "A really long comment with lots of content, really just going on and on about how good this articale was and a bit more. Even more text added on now."
-            }
-          />
-          <Comment commentText={"Shorter commemt."} />
+          {commentsLoading ? (
+            <Flex justify="center" align="center" h="10vh">
+              <Spinner size="xl" />
+            </Flex>
+          ) : (
+            <>
+              {comments.map((comment: CommentI) => (
+                <Comment key={comment._id} comment={comment} />
+              ))}
+            </>
+          )}
         </Flex>
       </Flex>
     </>
