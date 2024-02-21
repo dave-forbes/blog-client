@@ -40,3 +40,11 @@ export interface CommentI {
   updatedAt: Date;
   _id: string;
 }
+
+export interface ExpressValidatorErrorI {
+  location: string;
+  msg: string;
+  path: string;
+  type: string;
+  value: string;
+}
