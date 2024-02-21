@@ -1,12 +1,24 @@
-import { Button, Flex, FormControl, Text, Textarea } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  FormControl,
+  Text,
+  Textarea,
+  Box,
+} from "@chakra-ui/react";
 import { useState } from "react";
 
 interface CreateCommentProps {
   postId: string | undefined;
   fetchComments: () => Promise<void>;
+  setCommentsLoading: () => void;
 }
 
-const CreateCommentForm = ({ postId, fetchComments }: CreateCommentProps) => {
+const CreateCommentForm = ({
+  postId,
+  fetchComments,
+  setCommentsLoading,
+}: CreateCommentProps) => {
   const [error, setError] = useState<string | undefined>();
   const [commentText, setCommentText] = useState("");
 
@@ -56,6 +68,8 @@ const CreateCommentForm = ({ postId, fetchComments }: CreateCommentProps) => {
 
       console.log(data);
 
+      setCommentsLoading();
+
       await fetchComments();
 
       setCommentText("");
@@ -70,22 +84,24 @@ const CreateCommentForm = ({ postId, fetchComments }: CreateCommentProps) => {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <FormControl>
-        <Flex direction="column" w="300px" align="center" gap={3}>
-          <Textarea
-            placeholder="Write a comment"
-            resize="none"
-            bg="white"
-            onChange={(e) => setCommentText(e.target.value)}
-            value={commentText}
-          ></Textarea>
-          <Button type="submit" w="50%">
-            Submit
-          </Button>
-        </Flex>
-      </FormControl>
-    </form>
+    <Box alignSelf="center">
+      <form onSubmit={handleSubmit}>
+        <FormControl>
+          <Flex direction="column" w="300px" align="center" gap={3}>
+            <Textarea
+              placeholder="Write a comment"
+              resize="none"
+              bg="white"
+              onChange={(e) => setCommentText(e.target.value)}
+              value={commentText}
+            ></Textarea>
+            <Button type="submit" w="50%">
+              Submit
+            </Button>
+          </Flex>
+        </FormControl>
+      </form>
+    </Box>
   );
 };
 
