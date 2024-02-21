@@ -1,4 +1,4 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import { AtSignIcon } from "@chakra-ui/icons";
 import { CommentI } from "../interfaces";
 
