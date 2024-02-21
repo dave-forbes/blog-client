@@ -154,7 +154,7 @@ const ReadPost = () => {
       <Flex direction="column" maxW="1200px" mx="auto" gap={5}>
         <Divider />
         <Flex
-          maxW="800px"
+          w={smallScreen ? "100%" : "60vw"}
           p={5}
           mx="auto"
           justify="center"
@@ -175,7 +175,11 @@ const ReadPost = () => {
                   {comments.length !== 0 ? (
                     <>
                       {comments.map((comment: CommentI) => (
-                        <Comment key={comment._id} comment={comment} />
+                        <>
+                          <Divider />
+                          <Comment key={comment._id} comment={comment} />
+                          <Divider />
+                        </>
                       ))}
                     </>
                   ) : (
@@ -189,6 +193,7 @@ const ReadPost = () => {
                 <CreateCommentForm
                   postId={postId}
                   fetchComments={fetchComments}
+                  setCommentsLoading={() => setCommentsLoading(true)}
                 />
               ) : (
                 <Flex
