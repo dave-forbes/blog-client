@@ -30,7 +30,7 @@ const PostCard = ({
   const smallScreen = useBreakpointValue({ base: true, lg: false });
 
   const shortenedText = (string: string): string =>
-    string.slice(0, 100).concat("...").replace("Introduction:", "").trim();
+    string.slice(0, 95).concat("...").replace("Introduction:", "").trim();
 
   const date = new Date(createdAt);
 
@@ -46,7 +46,7 @@ const PostCard = ({
             justify="center"
             pos="relative"
           >
-            <Image src={img1} w="100%" h="auto" objectFit="cover"></Image>
+            <Image src={img1} w="100%" h="400px" objectFit="cover"></Image>
             <Flex
               pos="absolute"
               bg="lightBg"
