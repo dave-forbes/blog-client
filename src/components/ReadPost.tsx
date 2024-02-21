@@ -8,7 +8,6 @@ import {
   Link,
   Button,
 } from "@chakra-ui/react";
-import image from "../assets/jef-willemyns-mluUYXoTotY-unsplash.jpg";
 import Divider from "./Divider";
 import Comment from "./Comment";
 import { useParams } from "react-router-dom";
@@ -116,7 +115,12 @@ const ReadPost = () => {
         justify="center"
         direction="column"
       >
-        <Image src={image} h="500px" w="100%" objectFit="cover"></Image>
+        <Image
+          src={post && post.img1}
+          h="500px"
+          w="100%"
+          objectFit="cover"
+        ></Image>
         <Flex
           bg="lightBg"
           top="500px"

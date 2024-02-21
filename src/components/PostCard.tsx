@@ -8,7 +8,6 @@ import {
   LinkBox,
   LinkOverlay,
 } from "@chakra-ui/react";
-import image from "../assets/jef-willemyns-mluUYXoTotY-unsplash.jpg";
 import { UserI } from "../interfaces";
 
 interface PostCardProps {
@@ -17,9 +16,17 @@ interface PostCardProps {
   user: UserI;
   createdAt: Date;
   _id: string;
+  img1: string;
 }
 
-const PostCard = ({ title, text, user, _id, createdAt }: PostCardProps) => {
+const PostCard = ({
+  title,
+  text,
+  user,
+  _id,
+  createdAt,
+  img1,
+}: PostCardProps) => {
   const smallScreen = useBreakpointValue({ base: true, lg: false });
 
   const shortenedText = (string: string): string =>
@@ -39,7 +46,7 @@ const PostCard = ({ title, text, user, _id, createdAt }: PostCardProps) => {
             justify="center"
             pos="relative"
           >
-            <Image src={image} w="100%" h="auto" objectFit="cover"></Image>
+            <Image src={img1} w="100%" h="auto" objectFit="cover"></Image>
             <Flex
               pos="absolute"
               bg="lightBg"

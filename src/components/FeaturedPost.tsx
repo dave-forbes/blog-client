@@ -8,7 +8,6 @@ import {
   Text,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import image from "../assets/jef-willemyns-mluUYXoTotY-unsplash.jpg";
 import { PostI } from "../interfaces";
 
 interface FeaturedPostProps {
@@ -32,7 +31,7 @@ const FeaturedPost = ({ post }: FeaturedPostProps) => {
   return (
     <LinkBox pos="relative">
       <LinkOverlay href={"/posts/" + post._id}>
-        <Image src={image} h="500px" w="100%" objectFit="cover"></Image>
+        <Image src={post.img1} h="500px" w="100%" objectFit="cover"></Image>
         <Box bg="lightBg" pos="absolute" bottom="0" p={5} m={5}>
           <Heading color="headerText">{post.title}</Heading>
           <Flex align="baseline" gap={5}>
