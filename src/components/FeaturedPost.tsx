@@ -17,7 +17,7 @@ interface FeaturedPostProps {
 
 const FeaturedPost = ({ post }: FeaturedPostProps) => {
   if (!post) {
-    return null;
+    return <Text> Unable to find featured post.</Text>;
   }
   const extractFirstSentence = (text: string): string => {
     const sentences = text.replace("Introduction:", "").split(".");
