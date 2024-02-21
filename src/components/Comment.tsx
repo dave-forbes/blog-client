@@ -10,7 +10,7 @@ const Comment = ({ comment }: CommentProps) => {
   const date = new Date(comment.createdAt);
 
   return (
-    <Flex px={5} direction="column" gap={2}>
+    <Flex p={5} direction="column" gap={2}>
       <Flex justify="space-between" align="center">
         <Flex align="center" gap={1}>
           <AtSignIcon />
