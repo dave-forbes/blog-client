@@ -83,7 +83,11 @@ const Login = () => {
           <Button type="submit" colorScheme="teal" mt={4}>
             Login
           </Button>
-          {error && <Text>{error}</Text>}
+          {error && (
+            <Text textAlign="center" mt={5} color="red">
+              {error}
+            </Text>
+          )}
         </Flex>
       </form>
     </Flex>
