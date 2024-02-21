@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Flex,
@@ -12,21 +12,32 @@ import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import Divider from "./Divider";
 import { useAuth } from "../authContext";
 
-interface HeaderProps {
-  logout: () => void;
-}
-
-function Header({ logout }: HeaderProps) {
+function Header() {
   const [isOpen, setIsOpen] = useState(false);
-  const { isLoggedIn } = useAuth();
-
+  const { isLoggedIn, setIsLoggedIn } = useAuth();
+  const [username, setUsername] = useState<string | null>("");
   const showBurgerMenu = useBreakpointValue({ base: true, md: false });
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
-  const username = localStorage.getItem("userName");
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userName");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("author");
+    setIsLoggedIn(false);
+  };
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      const username = localStorage.getItem("userName");
+      setUsername(username);
+    } else {
+      setUsername(null);
+    }
+  }, [isLoggedIn]);
 
   return (
     <Box
@@ -69,7 +80,7 @@ function Header({ logout }: HeaderProps) {
             {isLoggedIn ? (
               <Flex align="center" gap={5}>
                 <p>Welcome back, {username}</p>
-                <Button onClick={logout} colorScheme="blue">
+                <Button onClick={handleLogout} colorScheme="blue">
                   Logout
                 </Button>
               </Flex>
@@ -93,7 +104,7 @@ function Header({ logout }: HeaderProps) {
               <Flex align="center" direction="column" gap={5}>
                 <p>Logged In!</p>
                 {/* You can also display an icon here if you prefer */}
-                <Button onClick={logout} colorScheme="blue">
+                <Button onClick={handleLogout} colorScheme="blue">
                   Logout
                 </Button>
               </Flex>

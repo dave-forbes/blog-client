@@ -9,6 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../authContext";
+import { decodeToken, isTokenValid } from "../authUtils";
 
 const Login = () => {
   const [error, setError] = useState("");
@@ -46,11 +47,25 @@ const Login = () => {
       }
 
       const data = await response.json();
+      const token = data.token;
 
-      localStorage.setItem("token", data.token);
-      setIsLoggedIn(true);
+      // log in successful, check token and store data
 
-      navigate("/");
+      localStorage.setItem("token", token);
+      if (token) {
+        if (isTokenValid(token)) {
+          const decodedToken = decodeToken(token);
+          if (decodedToken) {
+            // Token valid
+            const authorString = JSON.stringify(decodedToken.author);
+            localStorage.setItem("author", authorString);
+            localStorage.setItem("userId", decodedToken.id);
+            localStorage.setItem("userName", decodedToken.username);
+            setIsLoggedIn(true);
+            navigate("/");
+          }
+        }
+      }
     } catch (error: any) {
       const responseData = JSON.parse(error.message);
       setError(responseData.message);
