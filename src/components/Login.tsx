@@ -19,7 +19,6 @@ const Login = () => {
 
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
-    console.log("Form submitted");
 
     const formData = {
       username: username,
