@@ -11,6 +11,7 @@ function App() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    // If token exists try to log user in
     if (token) {
       if (isTokenValid(token)) {
         const decodedToken = decodeToken(token);
@@ -22,13 +23,13 @@ function App() {
           return;
         }
       }
-      // Token expired or invalid, clear it from storage and redirect to login
+      // Token expired or invalid, clear it from storage and log out
       localStorage.removeItem("token");
       localStorage.removeItem("userName");
       localStorage.removeItem("userId");
       setIsLoggedIn(false);
     } else {
-      // No token so log out
+      // No token ensure logged out
       setIsLoggedIn(false);
     }
   }, []);
