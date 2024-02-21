@@ -1,11 +1,20 @@
 import { useState } from "react";
-import { Flex, FormControl, FormLabel, Input, Button } from "@chakra-ui/react";
+import {
+  Flex,
+  FormControl,
+  FormLabel,
+  Input,
+  Button,
+  Text,
+} from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import { ExpressValidatorErrorI } from "../interfaces";
 
 const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState([]);
   const navigate = useNavigate();
 
   const handleSubmit = async (event: { preventDefault: () => void }) => {
@@ -33,15 +42,14 @@ const Register = () => {
       );
 
       if (!response.ok) {
-        throw new Error("Network response was not ok");
+        const data = await response.json();
+        throw new Error(JSON.stringify(data));
       }
 
-      const data = await response.json();
-      console.log(data);
-
       navigate("/log-in");
-    } catch (error) {
-      console.error("There was a problem with the fetch operation:", error);
+    } catch (error: any) {
+      const responseData = JSON.parse(error.message);
+      setError(responseData.errors);
     }
   };
 
@@ -80,6 +88,12 @@ const Register = () => {
             Sign Up
           </Button>
         </Flex>
+        {error.length !== 0 &&
+          error.map((errorMsg: ExpressValidatorErrorI, index) => (
+            <Text key={index} textAlign="center" mt={5} color="red">
+              {errorMsg.msg}
+            </Text>
+          ))}
       </form>
     </Flex>
   );
