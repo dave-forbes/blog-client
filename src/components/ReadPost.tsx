@@ -23,7 +23,8 @@ const ReadPost = () => {
   const [comments, setComments] = useState<CommentI[]>([]);
   const [commentsLoading, setCommentsLoading] = useState(true);
   const { postId } = useParams();
-  const [error, setError] = useState(false);
+  const [errorPost, setErrorPost] = useState(false);
+  const [errorComment, setErrorComment] = useState(false);
   const { isLoggedIn } = useAuth();
 
   // fetch post
@@ -41,7 +42,7 @@ const ReadPost = () => {
           }
         );
         if (!response.ok) {
-          throw new Error("Failed to fetch posts");
+          throw new Error();
         }
         const post = await response.json();
         post.createdAt = new Date(post.createdAt);
@@ -49,7 +50,7 @@ const ReadPost = () => {
         setPost(post);
         setPostLoading(false);
       } catch (error) {
-        setError(true);
+        setErrorPost(true);
       }
     };
     fetchPost();
@@ -58,27 +59,29 @@ const ReadPost = () => {
   // fetch post comments
 
   const fetchComments = async () => {
-    try {
-      const response = await fetch(
-        `https://blog-api-production-7c83.up.railway.app/comments/${postId}`,
-        {
-          method: "GET",
-          mode: "cors",
-          cache: "no-cache",
-          referrerPolicy: "no-referrer",
+    if (!errorPost) {
+      try {
+        const response = await fetch(
+          `https://blog-api-production-7c83.up.railway.app/comments/${postId}`,
+          {
+            method: "GET",
+            mode: "cors",
+            cache: "no-cache",
+            referrerPolicy: "no-referrer",
+          }
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch comments");
         }
-      );
-      if (!response.ok) {
-        throw new Error("Failed to fetch comments");
+        const comments = await response.json();
+        comments.map((comment: CommentI) => {
+          comment.createdAt = new Date(comment.createdAt);
+        });
+        setComments(comments);
+        setCommentsLoading(false);
+      } catch (error) {
+        setErrorComment(true);
       }
-      const comments = await response.json();
-      comments.map((comment: CommentI) => {
-        comment.createdAt = new Date(comment.createdAt);
-      });
-      setComments(comments);
-      setCommentsLoading(false);
-    } catch (error) {
-      setError(true);
     }
   };
 
@@ -88,18 +91,18 @@ const ReadPost = () => {
 
   const smallScreen = useBreakpointValue({ base: true, md: false });
 
-  if (postLoading) {
+  if (errorPost) {
     return (
       <Flex justify="center" align="center" h="100vh">
-        <Spinner size="xl" />
+        <Text>An error occured, cannot find post.</Text>
       </Flex>
     );
   }
 
-  if (error) {
+  if (postLoading) {
     return (
       <Flex justify="center" align="center" h="100vh">
-        <Text>An error occured...</Text>
+        <Spinner size="xl" />
       </Flex>
     );
   }
@@ -126,22 +129,21 @@ const ReadPost = () => {
           gap={5}
         >
           <Flex direction="column" align="center" gap={5}>
-            <Heading color="headerText">{post ? post.title : ""}</Heading>
+            <Heading color="headerText">{post && post.title}</Heading>
             <Text>
-              <strong>{post ? post.user.username : ""}</strong> -
-              {post
-                ? post.createdAt.toLocaleString("en-gb", {
-                    weekday: "long",
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })
-                : ""}
+              <strong>{post && post.user.username}</strong> -
+              {post &&
+                post.createdAt.toLocaleString("en-gb", {
+                  weekday: "long",
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
             </Text>
           </Flex>
 
           <Text fontSize="lg" whiteSpace="pre-wrap">
-            {post ? post.text : ""}
+            {post && post.text}
           </Text>
         </Flex>
       </Flex>
@@ -158,31 +160,49 @@ const ReadPost = () => {
           <Flex direction="column" align="center" justify="center" gap={1}>
             <Heading fontSize="3xl">Comments</Heading>
           </Flex>
-          {commentsLoading ? (
-            <Flex justify="center" align="center" h="10vh">
-              <Spinner size="xl" />
-            </Flex>
-          ) : (
+          {!errorComment ? (
             <>
-              {comments.length !== 0 ? (
-                <>
-                  {comments.map((comment: CommentI) => (
-                    <Comment key={comment._id} comment={comment} />
-                  ))}
-                </>
+              {commentsLoading ? (
+                <Flex justify="center" align="center" h="10vh">
+                  <Spinner size="xl" />
+                </Flex>
               ) : (
-                <Text textAlign="center">No comments yet, be the first!</Text>
+                <>
+                  {comments.length !== 0 ? (
+                    <>
+                      {comments.map((comment: CommentI) => (
+                        <Comment key={comment._id} comment={comment} />
+                      ))}
+                    </>
+                  ) : (
+                    <Text textAlign="center">
+                      No comments yet, be the first!
+                    </Text>
+                  )}
+                </>
               )}
+              {isLoggedIn ? (
+                <CreateCommentForm
+                  postId={postId}
+                  fetchComments={fetchComments}
+                />
+              ) : (
+                <Flex
+                  direction="column"
+                  align="center"
+                  justify="center"
+                  gap={3}
+                >
+                  <Text>You need to be logged in to write comments.</Text>
+                  <Link href="/log-in">
+                    <Button>Log in</Button>
+                  </Link>
+                </Flex>
+              )}{" "}
             </>
-          )}
-          {isLoggedIn ? (
-            <CreateCommentForm postId={postId} fetchComments={fetchComments} />
           ) : (
-            <Flex direction="column" align="center" justify="center" gap={3}>
-              <Text>You need to be logged in to write comments.</Text>
-              <Link href="/log-in">
-                <Button>Log in</Button>
-              </Link>
+            <Flex justify="center" align="center" h="100vh">
+              <Text>An error occured, cannot find comments.</Text>
             </Flex>
           )}
         </Flex>
