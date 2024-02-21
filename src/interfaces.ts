@@ -8,6 +8,7 @@ export interface PostI {
   title: string;
   user: UserI;
   __v: number;
+  img1: string;
 }
 
 export interface FeaturedPostI {
@@ -20,6 +21,7 @@ export interface FeaturedPostI {
   title: string;
   user: UserI;
   __v: number;
+  img1: string;
 }
 
 export interface UserI {
