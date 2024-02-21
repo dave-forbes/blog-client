@@ -43,9 +43,7 @@ const Login = () => {
 
       if (!response.ok) {
         const data = await response.json();
-        console.log(data);
-        setError(data.message);
-        throw new Error("Network response was not ok");
+        throw new Error(JSON.stringify(data));
       }
 
       const data = await response.json();
@@ -53,8 +51,9 @@ const Login = () => {
       localStorage.setItem("token", data.token);
       setIsLoggedIn(true);
       navigate(-1);
-    } catch (error) {
-      console.error("There was a problem with the fetch operation:", error);
+    } catch (error: any) {
+      const responseData = JSON.parse(error.message);
+      setError(responseData.message);
     }
   };
 
