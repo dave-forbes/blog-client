@@ -1,15 +1,7 @@
 import { Box } from "@chakra-ui/react";
 
 const Divider = () => {
-  return (
-    <Box
-      borderTop="1px"
-      borderColor="borderColor"
-      opacity="0.5"
-      mt={5}
-      mx={5}
-    ></Box>
-  );
+  return <Box borderTop="1px" borderColor="borderColor" opacity="0.5"></Box>;
 };
 
 export default Divider;
