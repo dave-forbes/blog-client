@@ -7,6 +7,7 @@ import {
   Spinner,
   Link,
   Button,
+  Box,
 } from "@chakra-ui/react";
 import Divider from "./Divider";
 import Comment from "./Comment";
@@ -175,11 +176,11 @@ const ReadPost = () => {
                   {comments.length !== 0 ? (
                     <>
                       {comments.map((comment: CommentI) => (
-                        <>
+                        <Box key={comment._id}>
                           <Divider />
-                          <Comment key={comment._id} comment={comment} />
+                          <Comment comment={comment} />
                           <Divider />
-                        </>
+                        </Box>
                       ))}
                     </>
                   ) : (
