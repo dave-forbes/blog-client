@@ -1,4 +1,11 @@
-import { Grid, Box, useBreakpointValue, Flex, Spinner } from "@chakra-ui/react";
+import {
+  Grid,
+  Box,
+  useBreakpointValue,
+  Flex,
+  Spinner,
+  Text,
+} from "@chakra-ui/react";
 import PostCard from "./PostCard";
 import FeaturedPost from "./FeaturedPost";
 import { useEffect, useState } from "react";
@@ -9,6 +16,7 @@ const Posts = () => {
   const [posts, setPosts] = useState<PostI[]>([]);
   const [featuredPost, setFeaturedPost] = useState<FeaturedPostI | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -40,11 +48,21 @@ const Posts = () => {
         setFeaturedPost(featuredPost);
         setLoading(false);
       } catch (error) {
-        console.error(error);
+        setError(true);
       }
     };
     fetchPosts();
   }, []);
+
+  if (error) {
+    return (
+      <Flex justify="center" align="center" h="100vh">
+        <Text>
+          An error occured, failed to find posts, please try again later.
+        </Text>
+      </Flex>
+    );
+  }
 
   if (loading) {
     return (
