@@ -4,6 +4,7 @@ interface DecodedToken {
   id: string;
   username: string;
   exp: number;
+  author: Boolean;
 }
 
 export function decodeToken(token: string): DecodedToken | null {
