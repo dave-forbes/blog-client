@@ -1,5 +1,4 @@
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
-// import ReactDOM from "react-dom";
 import { createRoot } from "react-dom/client";
 import Router from "./router";
 import { AuthProvider } from "./authContext";
@@ -19,14 +18,11 @@ const theme = extendTheme({
   },
 });
 
-const container = document.getElementById("root");
-if (container) {
-  const root = createRoot(container);
-  root.render(
-    <ChakraProvider theme={theme}>
-      <AuthProvider>
-        <Router />
-      </AuthProvider>
-    </ChakraProvider>
-  );
-}
+const root = createRoot(document.getElementById("root") as Element);
+root.render(
+  <ChakraProvider theme={theme}>
+    <AuthProvider>
+      <Router />
+    </AuthProvider>
+  </ChakraProvider>
+);
