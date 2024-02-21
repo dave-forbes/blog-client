@@ -154,7 +154,7 @@ const ReadPost = () => {
       <Flex direction="column" maxW="1200px" mx="auto" gap={5}>
         <Divider />
         <Flex
-          w={smallScreen ? "100%" : "60vw"}
+          w={smallScreen ? "100%" : "70%"}
           p={5}
           mx="auto"
           justify="center"
