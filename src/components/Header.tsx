@@ -46,7 +46,7 @@ function Header({ logout }: HeaderProps) {
         justify="space-between"
         wrap="wrap"
         px={6}
-        pt={4}
+        py={4}
         color="headerText"
       >
         <Box>
