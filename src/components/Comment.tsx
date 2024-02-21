@@ -10,9 +10,9 @@ const Comment = ({ comment }: CommentProps) => {
   const date = new Date(comment.createdAt);
 
   return (
-    <Box>
+    <Flex px={5} direction="column" gap={2}>
       <Flex justify="space-between" align="center">
-        <Flex align="center">
+        <Flex align="center" gap={1}>
           <AtSignIcon />
           <Text>
             <strong>{comment.user.username}</strong> -
@@ -28,7 +28,7 @@ const Comment = ({ comment }: CommentProps) => {
         </Text>
       </Flex>
       <Text>{comment.text}</Text>
-    </Box>
+    </Flex>
   );
 };
 
