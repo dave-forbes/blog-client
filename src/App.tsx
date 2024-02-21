@@ -3,33 +3,32 @@ import Header from "./components/Header";
 import { useEffect } from "react";
 import Footer from "./components/Footer";
 import { Outlet } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
 import { useAuth } from "./authContext";
+import { decodeToken, isTokenValid } from "./authUtils";
 
 function App() {
   const { setIsLoggedIn } = useAuth();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    // Decode the token to get its expiration time
     if (token) {
-      const decodedToken: { id: string; username: string; exp: number } =
-        jwtDecode(token);
-      localStorage.setItem("userId", decodedToken.id);
-      localStorage.setItem("userName", decodedToken.username);
-      const expirationTimeS = decodedToken.exp;
-      const expirationTimeMs = expirationTimeS * 1000;
-      const currentTime = Date.now();
-      if (currentTime < expirationTimeMs) {
-        setIsLoggedIn(true);
-      } else {
-        // Token expired, clear it from storage and redirect to login
-        localStorage.removeItem("token");
-        localStorage.removeItem("userName");
-        localStorage.removeItem("userId");
-        setIsLoggedIn(false);
+      if (isTokenValid(token)) {
+        const decodedToken = decodeToken(token);
+        if (decodedToken) {
+          // Token valid so log in
+          localStorage.setItem("userId", decodedToken.id);
+          localStorage.setItem("userName", decodedToken.username);
+          setIsLoggedIn(true);
+          return;
+        }
       }
+      // Token expired or invalid, clear it from storage and redirect to login
+      localStorage.removeItem("token");
+      localStorage.removeItem("userName");
+      localStorage.removeItem("userId");
+      setIsLoggedIn(false);
     } else {
+      // No token so log out
       setIsLoggedIn(false);
     }
   }, []);
