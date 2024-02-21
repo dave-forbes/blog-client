@@ -46,10 +46,11 @@ const Login = () => {
       }
 
       const data = await response.json();
-      console.log(data);
+
       localStorage.setItem("token", data.token);
       setIsLoggedIn(true);
-      navigate(-1);
+
+      navigate("/");
     } catch (error: any) {
       const responseData = JSON.parse(error.message);
       setError(responseData.message);
