@@ -43,7 +43,7 @@ const Login = () => {
 
       if (!response.ok) {
         const data = await response.json();
-        throw new Error(JSON.stringify(data));
+        throw new Error(`${response.status}: ${data.message}`);
       }
 
       const data = await response.json();
@@ -67,13 +67,12 @@ const Login = () => {
         }
       }
     } catch (error: any) {
-      const responseData = JSON.parse(error.message);
-      setError(responseData.message);
+      setError(error.message);
     }
   };
 
   return (
-    <Flex align="center" justify="center" height="60vh">
+    <Flex align="center" justify="center" height="60vh" direction="column">
       <form onSubmit={handleSubmit}>
         <Flex direction="column">
           <FormControl id="username" isRequired>
@@ -97,13 +96,13 @@ const Login = () => {
           <Button type="submit" colorScheme="teal" mt={4}>
             Login
           </Button>
-          {error && (
-            <Text textAlign="center" mt={5} color="red">
-              {error}
-            </Text>
-          )}
         </Flex>
       </form>
+      {error && (
+        <Text textAlign="center" mt={5} color="red">
+          {error}
+        </Text>
+      )}
     </Flex>
   );
 };
