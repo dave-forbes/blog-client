@@ -8,7 +8,6 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { ExpressValidatorErrorI } from "../interfaces";
 
 const Register = () => {
   const [username, setUsername] = useState("");
