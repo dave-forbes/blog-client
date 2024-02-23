@@ -14,7 +14,7 @@ const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState([]);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (event: { preventDefault: () => void }) => {
@@ -42,19 +42,33 @@ const Register = () => {
       );
 
       if (!response.ok) {
-        const data = await response.json();
-        throw new Error(JSON.stringify(data));
+        if (response.status === 400) {
+          // recieved express validator array
+          const data = await response.json();
+          let errorString: string = "";
+          data.errors.forEach((error: any): void => {
+            errorString = errorString + ", " + error.msg;
+          });
+          throw new Error(`${response.status}: ${errorString.slice(1)}`);
+        } else {
+          throw new Error(`${response.status}: Server error`);
+        }
       }
 
       navigate("/log-in");
     } catch (error: any) {
-      const responseData = JSON.parse(error.message);
-      setError(responseData.errors);
+      setError(error.message);
     }
   };
 
   return (
-    <Flex align="center" justify="center" height="60vh">
+    <Flex
+      align="center"
+      justify="center"
+      height="60vh"
+      direction="column"
+      gap={5}
+    >
       <form onSubmit={handleSubmit}>
         <Flex direction="column">
           <FormControl id="username" isRequired>
@@ -88,13 +102,8 @@ const Register = () => {
             Sign Up
           </Button>
         </Flex>
-        {error.length !== 0 &&
-          error.map((errorMsg: ExpressValidatorErrorI, index) => (
-            <Text key={index} textAlign="center" mt={5} color="red">
-              {errorMsg.msg}
-            </Text>
-          ))}
       </form>
+      {error && <Text color="red">{error}</Text>}
     </Flex>
   );
 };
