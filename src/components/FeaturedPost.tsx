@@ -6,9 +6,13 @@ import {
   LinkBox,
   LinkOverlay,
   Text,
+  Tag,
   useBreakpointValue,
+  TagLeftIcon,
+  TagLabel,
 } from "@chakra-ui/react";
 import { PostI } from "../interfaces";
+import { StarIcon } from "@chakra-ui/icons";
 
 interface FeaturedPostProps {
   post: PostI | null;
@@ -30,6 +34,18 @@ const FeaturedPost = ({ post }: FeaturedPostProps) => {
 
   return (
     <LinkBox pos="relative">
+      <Tag
+        size="md"
+        variant="solid"
+        colorScheme="yellow"
+        pos="absolute"
+        top="0"
+        left="0"
+        m={3}
+      >
+        <TagLeftIcon boxSize="12px" as={StarIcon} />
+        <TagLabel>Featured</TagLabel>
+      </Tag>
       <LinkOverlay href={"/posts/" + post._id}>
         <Image src={post.img1} h="500px" w="100%" objectFit="cover"></Image>
         <Box bg="lightBg" pos="absolute" bottom="0" p={5} m={5}>
