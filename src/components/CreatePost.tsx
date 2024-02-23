@@ -9,6 +9,7 @@ import {
   Heading,
   Text,
   Button,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import Divider from "./Divider";
@@ -122,10 +123,12 @@ const CreatePost = () => {
     }
   };
 
+  const smallScreen = useBreakpointValue({ base: true, md: false });
+
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <Box maxW="60%" mx="auto">
+        <Box maxW={smallScreen ? "90%" : "60%"} mx="auto">
           <Heading my={10}>Create post</Heading>
           <Divider />
 
@@ -189,7 +192,7 @@ const CreatePost = () => {
             top="500px"
             maxW="800px"
             p={5}
-            m={5}
+            m={smallScreen ? "0" : 5}
             mt="-200px"
             justify="center"
             direction="column"
