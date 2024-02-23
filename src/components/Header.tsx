@@ -16,6 +16,7 @@ function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const { isLoggedIn, setIsLoggedIn } = useAuth();
   const [username, setUsername] = useState<string | null>("");
+  const [author, setAuthor] = useState(false);
   const showBurgerMenu = useBreakpointValue({ base: true, md: false });
 
   const toggleMenu = () => {
@@ -33,9 +34,13 @@ function Header() {
   useEffect(() => {
     if (isLoggedIn) {
       const username = localStorage.getItem("userName");
+      const authorString = localStorage.getItem("author");
+      const author = authorString ? JSON.parse(authorString) : false;
       setUsername(username);
+      setAuthor(author);
     } else {
       setUsername(null);
+      setAuthor(false);
     }
   }, [isLoggedIn]);
 
@@ -80,6 +85,11 @@ function Header() {
             {isLoggedIn ? (
               <Flex align="center" gap={5}>
                 <p>Welcome back, {username}</p>
+                {author && (
+                  <Link href="/posts/create-post">
+                    <Button colorScheme="green"> Create post </Button>
+                  </Link>
+                )}
                 <Button onClick={handleLogout} colorScheme="blue">
                   Logout
                 </Button>
@@ -103,7 +113,6 @@ function Header() {
             {isLoggedIn ? (
               <Flex align="center" direction="column" gap={5}>
                 <p>Logged In!</p>
-                {/* You can also display an icon here if you prefer */}
                 <Button onClick={handleLogout} colorScheme="blue">
                   Logout
                 </Button>
