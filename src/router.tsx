@@ -5,6 +5,7 @@ import Register from "./components/Register";
 import Login from "./components/Login";
 import ReadPost from "./components/ReadPost";
 import Home from "./components/Home";
+import CreatePost from "./components/CreatePost";
 
 const Router = () => {
   const router = createBrowserRouter([
@@ -25,6 +26,10 @@ const Router = () => {
         {
           path: "/posts/:postId",
           element: <ReadPost />,
+        },
+        {
+          path: "/posts/create-post",
+          element: <CreatePost />,
         },
       ],
     },
