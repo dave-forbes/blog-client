@@ -86,9 +86,14 @@ function Header() {
               <Flex align="center" gap={5}>
                 <p>Welcome back, {username}</p>
                 {author && (
-                  <Link href="/posts/create-post">
-                    <Button colorScheme="green"> Create post </Button>
-                  </Link>
+                  <>
+                    <Link href="/posts/create-post">
+                      <Button colorScheme="teal"> Create post </Button>
+                    </Link>
+                    <Link href="/posts/post-manager">
+                      <Button colorScheme="purple"> Post Mananger </Button>
+                    </Link>
+                  </>
                 )}
                 <Button onClick={handleLogout} colorScheme="blue">
                   Logout
@@ -111,8 +116,18 @@ function Header() {
         {isOpen && (
           <Flex align="center" w="100%" gap={5} direction="column" m={5}>
             {isLoggedIn ? (
-              <Flex align="center" direction="column" gap={5}>
-                <p>Logged In!</p>
+              <Flex align="center" gap={5} direction="column">
+                <p>Welcome back, {username}</p>
+                {author && (
+                  <>
+                    <Link href="/posts/create-post">
+                      <Button colorScheme="teal"> Create post </Button>
+                    </Link>
+                    <Link href="/posts/post-manager">
+                      <Button colorScheme="purple"> Post Mananger </Button>
+                    </Link>
+                  </>
+                )}
                 <Button onClick={handleLogout} colorScheme="blue">
                   Logout
                 </Button>
