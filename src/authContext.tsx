@@ -2,12 +2,10 @@ import React, { createContext, useContext, useState } from "react";
 import { isTokenValid } from "./authUtils";
 import { useEffect } from "react";
 
-// Define the type for the props
 interface AuthProviderProps {
   children: React.ReactNode;
 }
 
-// Create AuthContext
 const AuthContext = createContext(
   {} as {
     isLoggedIn: boolean;
@@ -15,13 +13,12 @@ const AuthContext = createContext(
   }
 );
 
-// AuthProvider component
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    // If token exists try to log user in
+    // Check token
     if (token) {
       if (isTokenValid(token)) {
         setIsLoggedIn(true);
@@ -34,7 +31,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setIsLoggedIn(false);
       }
     } else {
-      // No token ensure logged out
+      // No token log out
       setIsLoggedIn(false);
     }
   }, [isLoggedIn]);
@@ -46,5 +43,4 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   );
 };
 
-// useAuth custom hook
 export const useAuth = () => useContext(AuthContext);
