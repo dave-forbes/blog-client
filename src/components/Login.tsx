@@ -51,8 +51,8 @@ const Login = () => {
 
       // log in successful, check token and store data
 
-      localStorage.setItem("token", token);
       if (token) {
+        localStorage.setItem("token", token);
         if (isTokenValid(token)) {
           const decodedToken = decodeToken(token);
           if (decodedToken) {
