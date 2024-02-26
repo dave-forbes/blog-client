@@ -36,6 +36,10 @@ const Router = () => {
           path: "/posts/post-manager",
           element: <PostManager />,
         },
+        {
+          path: "/posts/create-post/:postId",
+          element: <CreatePost />,
+        },
       ],
     },
   ]);
