@@ -1,6 +1,7 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
 import { PostI } from "../interfaces";
 import { Dispatch, SetStateAction, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface PostControlProps {
   post: PostI;
@@ -87,6 +88,12 @@ const PostControls = ({ posts, setPosts, post }: PostControlProps) => {
     }
   };
 
+  const navigate = useNavigate();
+
+  const handleEdit = (id: string) => {
+    navigate(`/posts/create-post/${id}`);
+  };
+
   return (
     <>
       <Flex gap={5} mb={10}>
@@ -108,7 +115,9 @@ const PostControls = ({ posts, setPosts, post }: PostControlProps) => {
             Feature
           </Button>
         )}
-        <Button colorScheme="blue">Edit</Button>
+        <Button onClick={() => handleEdit(post._id)} colorScheme="blue">
+          Edit
+        </Button>
         <Button colorScheme="red">Delete</Button>
       </Flex>
       {error && (
