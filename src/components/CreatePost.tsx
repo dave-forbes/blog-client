@@ -36,7 +36,7 @@ const CreatePost = () => {
       setAuthor(userName);
       setId(userId);
     }
-  });
+  }, []);
 
   useEffect(() => {
     const newDate = new Date();
@@ -47,9 +47,7 @@ const CreatePost = () => {
       day: "numeric",
     });
     setDate(dateString);
-  });
-
-  useEffect(() => {});
+  }, []);
 
   const generatePreviewImage = (e: any) => {
     setFileError("");
@@ -79,11 +77,15 @@ const CreatePost = () => {
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
 
-    const formData = {
-      title: postTitle,
-      text: postText,
-      user: id,
-    };
+    const formData = new FormData();
+    formData.append("title", postTitle);
+    formData.append("text", postText);
+    formData.append("user", id);
+
+    const imageInput = document.getElementById("image") as HTMLInputElement;
+    if (imageInput.files && imageInput.files[0]) {
+      formData.append("image", imageInput.files[0]);
+    }
 
     const token = localStorage.getItem("token");
 
@@ -95,23 +97,22 @@ const CreatePost = () => {
           mode: "cors",
           cache: "no-cache",
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
           referrerPolicy: "no-referrer",
-          body: JSON.stringify(formData),
+          body: formData,
         }
       );
 
       if (!response.ok) {
-        console.log(response.status);
-        let error: string;
         if (response.status === 401) {
-          error = `${response.status}: Unathenticated, either not logged in or invalid login token.`;
-          throw new Error(error);
+          throw new Error(
+            `${response.status}: Unathenticated, either not logged in or invalid login token.`
+          );
         } else if (response.status === 403) {
-          error = `${response.status}: Access forbidden, your login token was not valid.`;
-          throw new Error(error);
+          throw new Error(
+            `${response.status}: Access forbidden, your login token was not valid.`
+          );
         } else {
           throw new Error(`${response.status}: Bad request.`);
         }
@@ -152,9 +153,10 @@ const CreatePost = () => {
                 h="500px"
               />
             </FormControl>
-            <FormControl id="image" isRequired>
+            <FormControl isRequired>
               <FormLabel>Image</FormLabel>
               <Input
+                id="image"
                 type="file"
                 accept="image/*"
                 p={1}
