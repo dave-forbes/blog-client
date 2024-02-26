@@ -35,16 +35,20 @@ const Posts = () => {
         }
         const data = await response.json();
 
+        // remove unpublished posts
+
+        const filteredData = data.filter((post: PostI) => post.published);
+
         // Extract the featured post
-        const featuredPostIndex = data.findIndex(
+        const featuredPostIndex = filteredData.findIndex(
           (post: { featured: FeaturedPostI }) => post.featured
         );
         const featuredPost =
           featuredPostIndex !== -1
-            ? data.splice(featuredPostIndex, 1)[0]
+            ? filteredData.splice(featuredPostIndex, 1)[0]
             : null;
 
-        setPosts(data);
+        setPosts(filteredData);
         setFeaturedPost(featuredPost);
         setLoading(false);
       } catch (error) {
