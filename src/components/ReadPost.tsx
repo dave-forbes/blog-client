@@ -16,6 +16,7 @@ import { PostI, CommentI } from "../interfaces";
 import { useEffect, useState } from "react";
 import { useAuth } from "../authContext";
 import CreateCommentForm from "./CreateCommentForm";
+import API_URL from "../apiConfig";
 
 const ReadPost = () => {
   const [post, setPost] = useState<PostI>();
@@ -32,15 +33,12 @@ const ReadPost = () => {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const response = await fetch(
-          `https://blog-api-production-7c83.up.railway.app/posts/read/${postId}`,
-          {
-            method: "GET",
-            mode: "cors",
-            cache: "no-cache",
-            referrerPolicy: "no-referrer",
-          }
-        );
+        const response = await fetch(`${API_URL}/posts/read/${postId}`, {
+          method: "GET",
+          mode: "cors",
+          cache: "no-cache",
+          referrerPolicy: "no-referrer",
+        });
         if (!response.ok) {
           throw new Error();
         }
@@ -61,15 +59,12 @@ const ReadPost = () => {
   const fetchComments = async () => {
     if (!errorPost) {
       try {
-        const response = await fetch(
-          `https://blog-api-production-7c83.up.railway.app/comments/${postId}`,
-          {
-            method: "GET",
-            mode: "cors",
-            cache: "no-cache",
-            referrerPolicy: "no-referrer",
-          }
-        );
+        const response = await fetch(`${API_URL}/comments/${postId}`, {
+          method: "GET",
+          mode: "cors",
+          cache: "no-cache",
+          referrerPolicy: "no-referrer",
+        });
         if (!response.ok) {
           throw new Error("Failed to fetch comments");
         }

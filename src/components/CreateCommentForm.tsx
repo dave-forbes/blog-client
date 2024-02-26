@@ -7,6 +7,7 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import API_URL from "../apiConfig";
 
 interface CreateCommentProps {
   postId: string | undefined;
@@ -38,20 +39,17 @@ const CreateCommentForm = ({
     console.log(token);
 
     try {
-      const response = await fetch(
-        "https://blog-api-production-7c83.up.railway.app/comments/create",
-        {
-          method: "POST",
-          mode: "cors",
-          cache: "no-cache",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          referrerPolicy: "no-referrer",
-          body: JSON.stringify(formData),
-        }
-      );
+      const response = await fetch(`${API_URL}/comments/create`, {
+        method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        referrerPolicy: "no-referrer",
+        body: JSON.stringify(formData),
+      });
 
       if (!response.ok) {
         if (response.status === 401) {

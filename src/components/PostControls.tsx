@@ -2,6 +2,7 @@ import { Button, Flex, Text } from "@chakra-ui/react";
 import { PostI } from "../interfaces";
 import { Dispatch, SetStateAction, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import API_URL from "../apiConfig";
 
 interface PostControlProps {
   post: PostI;
@@ -13,15 +14,12 @@ const PostControls = ({ posts, setPosts, post }: PostControlProps) => {
   const [error, setError] = useState("");
   const handlePublish = async (id: string) => {
     try {
-      const response = await fetch(
-        `https://blog-api-production-7c83.up.railway.app/posts/publish/${id}`,
-        {
-          method: "PUT",
-          mode: "cors",
-          cache: "no-cache",
-          referrerPolicy: "no-referrer",
-        }
-      );
+      const response = await fetch(`${API_URL}/posts/publish/${id}`, {
+        method: "PUT",
+        mode: "cors",
+        cache: "no-cache",
+        referrerPolicy: "no-referrer",
+      });
 
       if (!response.ok) {
         if (response.status === 404) {
@@ -50,15 +48,12 @@ const PostControls = ({ posts, setPosts, post }: PostControlProps) => {
 
   const handleFeatured = async (id: string) => {
     try {
-      const response = await fetch(
-        `https://blog-api-production-7c83.up.railway.app/posts/feature/${id}`,
-        {
-          method: "PUT",
-          mode: "cors",
-          cache: "no-cache",
-          referrerPolicy: "no-referrer",
-        }
-      );
+      const response = await fetch(`${API_URL}/posts/feature/${id}`, {
+        method: "PUT",
+        mode: "cors",
+        cache: "no-cache",
+        referrerPolicy: "no-referrer",
+      });
 
       if (!response.ok) {
         if (response.status === 404) {
@@ -98,18 +93,15 @@ const PostControls = ({ posts, setPosts, post }: PostControlProps) => {
 
   const handleDelete = async (id: string) => {
     try {
-      const response = await fetch(
-        `https://blog-api-production-7c83.up.railway.app/posts/delete/${id}`,
-        {
-          method: "DELETE",
-          mode: "cors",
-          cache: "no-cache",
-          referrerPolicy: "no-referrer",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await fetch(`${API_URL}/posts/delete/${id}`, {
+        method: "DELETE",
+        mode: "cors",
+        cache: "no-cache",
+        referrerPolicy: "no-referrer",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       if (!response.ok) {
         if (response.status === 404) {

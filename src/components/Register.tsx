@@ -8,6 +8,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import API_URL from "../apiConfig";
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -26,19 +27,16 @@ const Register = () => {
     };
 
     try {
-      const response = await fetch(
-        "https://blog-api-production-7c83.up.railway.app/users/register",
-        {
-          method: "POST",
-          mode: "cors",
-          cache: "no-cache",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          referrerPolicy: "no-referrer",
-          body: JSON.stringify(formData),
-        }
-      );
+      const response = await fetch(`${API_URL}/users/register`, {
+        method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        referrerPolicy: "no-referrer",
+        body: JSON.stringify(formData),
+      });
 
       if (!response.ok) {
         if (response.status === 400) {

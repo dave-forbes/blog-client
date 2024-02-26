@@ -10,6 +10,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../authContext";
 import { decodeToken, isTokenValid } from "../authUtils";
+import API_URL from "../apiConfig";
 
 const Login = () => {
   const [error, setError] = useState("");
@@ -27,19 +28,16 @@ const Login = () => {
     };
 
     try {
-      const response = await fetch(
-        "https://blog-api-production-7c83.up.railway.app/users/log-in",
-        {
-          method: "POST",
-          mode: "cors",
-          cache: "no-cache",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          referrerPolicy: "no-referrer",
-          body: JSON.stringify(formData),
-        }
-      );
+      const response = await fetch(`${API_URL}/users/log-in`, {
+        method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        referrerPolicy: "no-referrer",
+        body: JSON.stringify(formData),
+      });
 
       if (!response.ok) {
         const data = await response.json();

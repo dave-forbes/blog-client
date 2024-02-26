@@ -10,6 +10,7 @@ import PostCard from "./PostCard";
 import FeaturedPost from "./FeaturedPost";
 import { useEffect, useState } from "react";
 import { PostI, FeaturedPostI } from "../interfaces";
+import API_URL from "../apiConfig";
 
 const Posts = () => {
   const smallScreen = useBreakpointValue({ base: true, lg: false });
@@ -21,15 +22,12 @@ const Posts = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch(
-          "https://blog-api-production-7c83.up.railway.app/posts",
-          {
-            method: "GET",
-            mode: "cors",
-            cache: "no-cache",
-            referrerPolicy: "no-referrer",
-          }
-        );
+        const response = await fetch(`${API_URL}/posts`, {
+          method: "GET",
+          mode: "cors",
+          cache: "no-cache",
+          referrerPolicy: "no-referrer",
+        });
         if (!response.ok) {
           throw new Error("Failed to fetch posts");
         }
