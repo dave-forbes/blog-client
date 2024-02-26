@@ -64,7 +64,7 @@ const CreatePost = () => {
     } else {
       setLoading(false);
     }
-  }, []);
+  }, [postId]);
 
   useEffect(() => {
     const userName = localStorage.getItem("userName");
@@ -127,19 +127,38 @@ const CreatePost = () => {
     const token = localStorage.getItem("token");
 
     try {
-      const response = await fetch(
-        "https://blog-api-production-7c83.up.railway.app/posts/create",
-        {
-          method: "POST",
-          mode: "cors",
-          cache: "no-cache",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          referrerPolicy: "no-referrer",
-          body: formData,
-        }
-      );
+      let response;
+      if (postId) {
+        // update post
+        response = await fetch(
+          `https://blog-api-production-7c83.up.railway.app/posts/update/${postId}`,
+          {
+            method: "PUT",
+            mode: "cors",
+            cache: "no-cache",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            referrerPolicy: "no-referrer",
+            body: formData,
+          }
+        );
+      } else {
+        // create new post
+        response = await fetch(
+          "https://blog-api-production-7c83.up.railway.app/posts/create",
+          {
+            method: "POST",
+            mode: "cors",
+            cache: "no-cache",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            referrerPolicy: "no-referrer",
+            body: formData,
+          }
+        );
+      }
 
       if (!response.ok) {
         if (response.status === 401) {
