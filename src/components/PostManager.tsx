@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Box, Flex, Grid, Spinner, Text, Button } from "@chakra-ui/react";
+import { Box, Flex, Grid, Spinner, Text } from "@chakra-ui/react";
 import { PostI } from "../interfaces";
 import PostCard from "./PostCard";
 import PostControls from "./PostControls";
