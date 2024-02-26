@@ -22,12 +22,9 @@ const FeaturedPost = ({ post }: FeaturedPostProps) => {
   if (!post) {
     return null;
   }
-  const extractFirstSentence = (text: string): string => {
-    const sentences = text.replace("Introduction:", "").split(".");
-    const firstSentence = sentences[0].trim();
-    return firstSentence;
-  };
-  const summary = extractFirstSentence(post.text);
+  const shortenedText = (string: string): string =>
+    string.slice(0, 95).concat("...").replace("Introduction:", "").trim();
+  const summary = shortenedText(post.text);
 
   const date = new Date(post.createdAt);
   const smallScreen = useBreakpointValue({ base: true, md: false });
