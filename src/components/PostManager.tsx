@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Box, Flex, Grid, Spinner, Text, Button } from "@chakra-ui/react";
 import { PostI } from "../interfaces";
 import PostCard from "./PostCard";
+import PostControls from "./PostControls";
 
 const PostManager = () => {
   const [posts, setPosts] = useState<PostI[]>([]);
@@ -59,20 +60,7 @@ const PostManager = () => {
           {posts.map((post) => (
             <Flex key={post._id} direction="column" w="100%" align="center">
               <PostCard {...post} />
-              <Flex gap={5} mb={10}>
-                {post.published ? (
-                  <Button colorScheme="orange">Unpublish</Button>
-                ) : (
-                  <Button colorScheme="green">Unpublish</Button>
-                )}
-                {post.featured ? (
-                  <Button colorScheme="yellow">UnFeature</Button>
-                ) : (
-                  <Button colorScheme="pink">Feature</Button>
-                )}
-                <Button colorScheme="blue">Edit</Button>
-                <Button colorScheme="red">Delete</Button>
-              </Flex>
+              <PostControls posts={posts} setPosts={setPosts} post={post} />
             </Flex>
           ))}
         </Grid>
