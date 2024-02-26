@@ -94,6 +94,50 @@ const PostControls = ({ posts, setPosts, post }: PostControlProps) => {
     navigate(`/posts/create-post/${id}`);
   };
 
+  const token = localStorage.getItem("token");
+
+  const handleDelete = async (id: string) => {
+    try {
+      const response = await fetch(
+        `https://blog-api-production-7c83.up.railway.app/posts/delete/${id}`,
+        {
+          method: "DELETE",
+          mode: "cors",
+          cache: "no-cache",
+          referrerPolicy: "no-referrer",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        if (response.status === 404) {
+          throw new Error("Internal server error, please try again later.");
+        } else if (response.status === 401) {
+          throw new Error(
+            `${response.status}: Unathenticated, either not logged in or invalid login token.`
+          );
+        } else if (response.status === 403) {
+          throw new Error(
+            `${response.status}: Access forbidden, your login token was not valid.`
+          );
+        } else {
+          throw new Error(`${response.status}: Bad request.`);
+        }
+      }
+
+      // update posts locally
+
+      const updatedPosts = posts.filter((post) => post._id !== id);
+
+      setPosts(updatedPosts);
+      setError("");
+    } catch (error: any) {
+      setError(error.message);
+    }
+  };
+
   return (
     <>
       <Flex gap={5} mb={10}>
@@ -118,7 +162,9 @@ const PostControls = ({ posts, setPosts, post }: PostControlProps) => {
         <Button onClick={() => handleEdit(post._id)} colorScheme="blue">
           Edit
         </Button>
-        <Button colorScheme="red">Delete</Button>
+        <Button onClick={() => handleDelete(post._id)} colorScheme="red">
+          Delete
+        </Button>
       </Flex>
       {error && (
         <Text textAlign="center" mb={5} color="red">
