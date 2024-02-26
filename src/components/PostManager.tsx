@@ -57,8 +57,8 @@ const PostManager = () => {
       <Box as="section" my={10}>
         <Grid m="4rem 0" templateColumns="1fr" justifyItems="center">
           {posts.map((post) => (
-            <>
-              <PostCard key={post._id} {...post} />
+            <Flex key={post._id} direction="column" w="100%" align="center">
+              <PostCard {...post} />
               <Flex gap={5} mb={10}>
                 {post.published ? (
                   <Button colorScheme="orange">Unpublish</Button>
@@ -73,7 +73,7 @@ const PostManager = () => {
                 <Button colorScheme="blue">Edit</Button>
                 <Button colorScheme="red">Delete</Button>
               </Flex>
-            </>
+            </Flex>
           ))}
         </Grid>
       </Box>
