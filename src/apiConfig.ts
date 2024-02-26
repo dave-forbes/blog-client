@@ -11,4 +11,4 @@ if (mode === "development" && local) {
   throw new Error("API URL is not defined for the current environment.");
 }
 
-export { API_URL };
+export default API_URL;
