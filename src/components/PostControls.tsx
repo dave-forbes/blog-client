@@ -31,6 +31,8 @@ const PostControls = ({ posts, setPosts, post }: PostControlProps) => {
         }
       }
 
+      // update buttons locally
+
       const updatedPosts = posts.map((post) => {
         if (post._id === id) {
           return { ...post, published: !post.published };
@@ -44,6 +46,47 @@ const PostControls = ({ posts, setPosts, post }: PostControlProps) => {
       setError(error.message);
     }
   };
+
+  const handleFeatured = async (id: string) => {
+    try {
+      const response = await fetch(
+        `https://blog-api-production-7c83.up.railway.app/posts/feature/${id}`,
+        {
+          method: "PUT",
+          mode: "cors",
+          cache: "no-cache",
+          referrerPolicy: "no-referrer",
+        }
+      );
+
+      if (!response.ok) {
+        if (response.status === 404) {
+          throw new Error("Internal server error, please try again later.");
+        } else {
+          const data = await response.json();
+          throw new Error(data.message);
+        }
+      }
+
+      // update buttons locally
+
+      const updatedPosts = posts.map((post) => {
+        if (post.featured) {
+          return { ...post, featured: !post.featured };
+        }
+        if (post._id === id) {
+          return { ...post, featured: !post.featured };
+        }
+        return post;
+      });
+
+      setPosts(updatedPosts);
+      setError("");
+    } catch (error: any) {
+      setError(error.message);
+    }
+  };
+
   return (
     <>
       <Flex gap={5} mb={10}>
@@ -57,9 +100,13 @@ const PostControls = ({ posts, setPosts, post }: PostControlProps) => {
           </Button>
         )}
         {post.featured ? (
-          <Button colorScheme="yellow">UnFeature</Button>
+          <Button colorScheme="yellow" disabled>
+            Featured
+          </Button>
         ) : (
-          <Button colorScheme="pink">Feature</Button>
+          <Button onClick={() => handleFeatured(post._id)} colorScheme="pink">
+            Feature
+          </Button>
         )}
         <Button colorScheme="blue">Edit</Button>
         <Button colorScheme="red">Delete</Button>
