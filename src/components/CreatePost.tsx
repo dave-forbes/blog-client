@@ -10,11 +10,13 @@ import {
   Text,
   Button,
   useBreakpointValue,
+  FormHelperText,
+  Spinner,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import Divider from "./Divider";
 import placeholderImage from "../assets/ondra.jpeg";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const CreatePost = () => {
   const [postTitle, setpostTitle] = useState("Title");
@@ -28,6 +30,41 @@ const CreatePost = () => {
   const [error, setError] = useState("");
   const [fileError, setFileError] = useState("");
   const navigate = useNavigate();
+  const { postId } = useParams();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (postId) {
+      const fetchPost = async () => {
+        try {
+          const response = await fetch(
+            `https://blog-api-production-7c83.up.railway.app/posts/read/${postId}`,
+            {
+              method: "GET",
+              mode: "cors",
+              cache: "no-cache",
+              referrerPolicy: "no-referrer",
+            }
+          );
+          if (!response.ok) {
+            throw new Error();
+          }
+          const post = await response.json();
+          post.createdAt = new Date(post.createdAt);
+
+          setpostTitle(post.title);
+          setpostText(post.text);
+          setPreviewImage(post.img1);
+          setLoading(false);
+        } catch (error: any) {
+          setError(error.message);
+        }
+      };
+      fetchPost();
+    } else {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     const userName = localStorage.getItem("userName");
@@ -126,11 +163,19 @@ const CreatePost = () => {
 
   const smallScreen = useBreakpointValue({ base: true, md: false });
 
+  if (loading) {
+    return (
+      <Flex justify="center" h="100vh" pt="20vh">
+        <Spinner size="xl" />
+      </Flex>
+    );
+  }
+
   return (
     <>
       <form onSubmit={handleSubmit}>
         <Box maxW={smallScreen ? "90%" : "60%"} mx="auto">
-          <Heading my={10}>Create post</Heading>
+          <Heading my={10}>{postId ? "Update" : "Create"} post</Heading>
           <Divider />
 
           <Flex direction="column" my={10} gap={5}>
@@ -153,7 +198,7 @@ const CreatePost = () => {
                 h="500px"
               />
             </FormControl>
-            <FormControl isRequired>
+            <FormControl isRequired={postId ? false : true}>
               <FormLabel>Image</FormLabel>
               <Input
                 id="image"
@@ -162,6 +207,9 @@ const CreatePost = () => {
                 p={1}
                 onChange={generatePreviewImage}
               />
+              <FormHelperText>
+                {postId && "Ignore if you want to keep original image"}
+              </FormHelperText>
               {fileError && (
                 <Text textAlign="center" mt={3} color="red">
                   {fileError}
@@ -216,7 +264,7 @@ const CreatePost = () => {
           <Divider />
           <Flex align="center" justify="center" direction="column" gap={3}>
             <Button my={10} type="submit" colorScheme="teal">
-              Create Post
+              {postId ? "Update" : "Create"} post
             </Button>
             {error && (
               <Text textAlign="center" color="red">
