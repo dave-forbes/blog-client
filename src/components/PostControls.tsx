@@ -132,7 +132,7 @@ const PostControls = ({ posts, setPosts, post }: PostControlProps) => {
 
   return (
     <>
-      <Flex gap={5} mb={10}>
+      <Flex gap={5} my={5}>
         {post.published ? (
           <Button onClick={() => handlePublish(post._id)} colorScheme="orange">
             Unpublish
