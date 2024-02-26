@@ -7,7 +7,7 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import API_URL from "../apiConfig";
+import API_URL from "../utils/apiConfig";
 
 interface CreateCommentProps {
   postId: string | undefined;

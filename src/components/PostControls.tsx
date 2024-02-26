@@ -1,8 +1,8 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
-import { PostI } from "../interfaces";
+import { PostI } from "../utils/interfaces";
 import { Dispatch, SetStateAction, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import API_URL from "../apiConfig";
+import API_URL from "../utils/apiConfig";
 
 interface PostControlProps {
   post: PostI;

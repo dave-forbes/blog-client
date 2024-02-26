@@ -11,7 +11,7 @@ import {
   TagLeftIcon,
   TagLabel,
 } from "@chakra-ui/react";
-import { PostI } from "../interfaces";
+import { PostI } from "../utils/interfaces";
 import { StarIcon } from "@chakra-ui/icons";
 
 interface FeaturedPostProps {

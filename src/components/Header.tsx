@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import Divider from "./Divider";
-import { useAuth } from "../authContext";
+import { useAuth } from "../utils/authContext";
 
 function Header() {
   const [isOpen, setIsOpen] = useState(false);

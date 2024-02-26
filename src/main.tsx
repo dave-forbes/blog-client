@@ -1,7 +1,7 @@
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { createRoot } from "react-dom/client";
-import Router from "./router";
-import { AuthProvider } from "./authContext";
+import Router from "./components/router";
+import { AuthProvider } from "./utils/authContext";
 
 // Define custom theme
 const theme = extendTheme({

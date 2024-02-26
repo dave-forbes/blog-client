@@ -8,9 +8,9 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../authContext";
-import { decodeToken, isTokenValid } from "../authUtils";
-import API_URL from "../apiConfig";
+import { useAuth } from "../utils/authContext";
+import { decodeToken, isTokenValid } from "../utils/authUtils";
+import API_URL from "../utils/apiConfig";
 
 const Login = () => {
   const [error, setError] = useState("");

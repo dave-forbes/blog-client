@@ -9,8 +9,8 @@ import {
 import PostCard from "./PostCard";
 import FeaturedPost from "./FeaturedPost";
 import { useEffect, useState } from "react";
-import { PostI, FeaturedPostI } from "../interfaces";
-import API_URL from "../apiConfig";
+import { PostI, FeaturedPostI } from "../utils/interfaces";
+import API_URL from "../utils/apiConfig";
 
 const Posts = () => {
   const smallScreen = useBreakpointValue({ base: true, lg: false });

@@ -8,7 +8,7 @@ import {
   LinkBox,
   LinkOverlay,
 } from "@chakra-ui/react";
-import { UserI } from "../interfaces";
+import { UserI } from "../utils/interfaces";
 
 interface PostCardProps {
   title: string;

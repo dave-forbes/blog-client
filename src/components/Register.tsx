@@ -8,7 +8,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import API_URL from "../apiConfig";
+import API_URL from "../utils/apiConfig";
 
 const Register = () => {
   const [username, setUsername] = useState("");

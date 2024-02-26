@@ -12,11 +12,11 @@ import {
 import Divider from "./Divider";
 import Comment from "./Comment";
 import { useParams } from "react-router-dom";
-import { PostI, CommentI } from "../interfaces";
+import { PostI, CommentI } from "../utils/interfaces";
 import { useEffect, useState } from "react";
-import { useAuth } from "../authContext";
+import { useAuth } from "../utils/authContext";
 import CreateCommentForm from "./CreateCommentForm";
-import API_URL from "../apiConfig";
+import API_URL from "../utils/apiConfig";
 
 const ReadPost = () => {
   const [post, setPost] = useState<PostI>();

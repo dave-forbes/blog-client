@@ -1,6 +1,6 @@
 import { Flex, Text } from "@chakra-ui/react";
 import { AtSignIcon } from "@chakra-ui/icons";
-import { CommentI } from "../interfaces";
+import { CommentI } from "../utils/interfaces";
 
 interface CommentProps {
   comment: CommentI;
