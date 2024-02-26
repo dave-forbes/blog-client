@@ -1,12 +1,12 @@
-import App from "./App";
+import App from "../App";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Error from "./components/Error";
-import Register from "./components/Register";
-import Login from "./components/Login";
-import ReadPost from "./components/ReadPost";
-import Home from "./components/Home";
-import CreatePost from "./components/CreatePost";
-import PostManager from "./components/PostManager";
+import Error from "./Error";
+import Register from "./Register";
+import Login from "./Login";
+import ReadPost from "./ReadPost";
+import Home from "./Home";
+import CreatePost from "./CreatePost";
+import PostManager from "./PostManager";
 
 const Router = () => {
   const router = createBrowserRouter([
