@@ -19,14 +19,7 @@ interface PostCardProps {
   img1: string;
 }
 
-const PostCard = ({
-  title,
-  text,
-  user,
-  _id,
-  createdAt,
-  img1,
-}: PostCardProps) => {
+const PostCard = ({ title, user, _id, createdAt, img1 }: PostCardProps) => {
   const smallScreen = useBreakpointValue({ base: true, lg: false });
 
   const date = new Date(createdAt);
