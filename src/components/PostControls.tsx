@@ -1,4 +1,4 @@
-import { Button, Flex, Text } from "@chakra-ui/react";
+import { Button, Grid, Text, useBreakpointValue } from "@chakra-ui/react";
 import { PostI } from "../utils/interfaces";
 import { Dispatch, SetStateAction, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +12,8 @@ interface PostControlProps {
 
 const PostControls = ({ posts, setPosts, post }: PostControlProps) => {
   const [error, setError] = useState("");
+  const smallScreen = useBreakpointValue({ base: true, md: false });
+
   const handlePublish = async (id: string) => {
     try {
       const response = await fetch(`${API_URL}/posts/publish/${id}`, {
@@ -132,7 +134,11 @@ const PostControls = ({ posts, setPosts, post }: PostControlProps) => {
 
   return (
     <>
-      <Flex gap={5} my={5}>
+      <Grid
+        gap={5}
+        my={5}
+        templateColumns={smallScreen ? "1fr 1fr" : "repeat(4, 1fr)"}
+      >
         {post.published ? (
           <Button onClick={() => handlePublish(post._id)} colorScheme="orange">
             Unpublish
@@ -157,7 +163,7 @@ const PostControls = ({ posts, setPosts, post }: PostControlProps) => {
         <Button onClick={() => handleDelete(post._id)} colorScheme="red">
           Delete
         </Button>
-      </Flex>
+      </Grid>
       {error && (
         <Text textAlign="center" mb={5} color="red">
           {error}
