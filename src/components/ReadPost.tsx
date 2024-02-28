@@ -17,6 +17,8 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../utils/authContext";
 import CreateCommentForm from "./CreateCommentForm";
 import API_URL from "../utils/apiConfig";
+import replaceElement from "../utils/replaceElement";
+import parse from "html-react-parser";
 
 const ReadPost = () => {
   const [post, setPost] = useState<PostI>();
@@ -44,7 +46,6 @@ const ReadPost = () => {
         }
         const post = await response.json();
         post.createdAt = new Date(post.createdAt);
-
         setPost(post);
         setPostLoading(false);
       } catch (error) {
@@ -141,10 +142,7 @@ const ReadPost = () => {
                 })}
             </Text>
           </Flex>
-
-          <Text fontSize="lg" whiteSpace="pre-wrap">
-            {post && post.text}
-          </Text>
+          {post && parse(post.text, { replace: replaceElement })}
         </Flex>
       </Flex>
       <Flex direction="column" maxW="1200px" mx="auto" gap={5}>
