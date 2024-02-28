@@ -17,6 +17,7 @@ import { useEffect, useState } from "react";
 import Divider from "./Divider";
 import placeholderImage from "../assets/ondra.jpeg";
 import { useNavigate, useParams } from "react-router-dom";
+import API_URL from "../utils/apiConfig";
 
 const CreatePost = () => {
   const [postTitle, setpostTitle] = useState("Title");
@@ -37,15 +38,12 @@ const CreatePost = () => {
     if (postId) {
       const fetchPost = async () => {
         try {
-          const response = await fetch(
-            `https://blog-api-production-7c83.up.railway.app/posts/read/${postId}`,
-            {
-              method: "GET",
-              mode: "cors",
-              cache: "no-cache",
-              referrerPolicy: "no-referrer",
-            }
-          );
+          const response = await fetch(`${API_URL}/posts/read/${postId}`, {
+            method: "GET",
+            mode: "cors",
+            cache: "no-cache",
+            referrerPolicy: "no-referrer",
+          });
           if (!response.ok) {
             throw new Error();
           }
@@ -130,34 +128,28 @@ const CreatePost = () => {
       let response;
       if (postId) {
         // update post
-        response = await fetch(
-          `https://blog-api-production-7c83.up.railway.app/posts/update/${postId}`,
-          {
-            method: "PUT",
-            mode: "cors",
-            cache: "no-cache",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-            referrerPolicy: "no-referrer",
-            body: formData,
-          }
-        );
+        response = await fetch(`${API_URL}/posts/update/${postId}`, {
+          method: "PUT",
+          mode: "cors",
+          cache: "no-cache",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          referrerPolicy: "no-referrer",
+          body: formData,
+        });
       } else {
         // create new post
-        response = await fetch(
-          "https://blog-api-production-7c83.up.railway.app/posts/create",
-          {
-            method: "POST",
-            mode: "cors",
-            cache: "no-cache",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-            referrerPolicy: "no-referrer",
-            body: formData,
-          }
-        );
+        response = await fetch(`${API_URL}/posts/create`, {
+          method: "POST",
+          mode: "cors",
+          cache: "no-cache",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          referrerPolicy: "no-referrer",
+          body: formData,
+        });
       }
 
       if (!response.ok) {
