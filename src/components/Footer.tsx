@@ -1,30 +1,22 @@
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import Divider from "./Divider";
 
 const Footer = () => {
   return (
     <Flex py={10} gap={10} direction="column" justify="space-around">
-      <Box>
-        <Flex justify="center">
-          <p>Sign up to our newsletter</p>
-          <input></input>
-          <Button>Sign up</Button>
-        </Flex>
-      </Box>
-      <Box>
+      <Flex direction="column" gap={3}>
         <Box>
           <Flex justify="space-evenly">
-            <Text>Overview</Text>
-            <Text>Licence</Text>
-            <Text>Documentation</Text>
-            <Text>Social</Text>
+            <Text>Contact</Text>
+            <Text>Terms of Use</Text>
+            <Text>Privacy Policy</Text>
           </Flex>
         </Box>
         <Divider />
         <Text align="center" color="lightText">
-          @ All rights reserved, copyright bollocks...
+          &#169; 2024 climbtribe.app. All Rights Reserved.
         </Text>
-      </Box>
+      </Flex>
     </Flex>
   );
 };
