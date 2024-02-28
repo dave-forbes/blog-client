@@ -1,5 +1,4 @@
 import {
-  Box,
   Flex,
   Heading,
   Image,
@@ -22,9 +21,6 @@ const FeaturedPost = ({ post }: FeaturedPostProps) => {
   if (!post) {
     return null;
   }
-  const shortenedText = (string: string): string =>
-    string.slice(0, 95).concat("...").replace("Introduction:", "").trim();
-  const summary = shortenedText(post.text);
 
   const date = new Date(post.createdAt);
   const smallScreen = useBreakpointValue({ base: true, md: false });
@@ -45,18 +41,17 @@ const FeaturedPost = ({ post }: FeaturedPostProps) => {
       </Tag>
       <LinkOverlay href={"/posts/" + post._id}>
         <Image src={post.img1} h="500px" w="100%" objectFit="cover"></Image>
-        <Box bg="lightBg" pos="absolute" bottom="0" p={5} m={5}>
+        <Flex
+          bg="lightBg"
+          pos="absolute"
+          bottom="0"
+          p={5}
+          m={5}
+          align="baseline"
+          gap={5}
+        >
           <Heading color="headerText">{post.title}</Heading>
           <Flex align="baseline" gap={5}>
-            <Text
-              fontSize="xl"
-              fontWeight="500"
-              color="headerText"
-              pl="0.5rem"
-              pt="1rem"
-            >
-              {summary + "..."}
-            </Text>
             {!smallScreen ? (
               <>
                 <Text>
@@ -73,7 +68,7 @@ const FeaturedPost = ({ post }: FeaturedPostProps) => {
               ""
             )}
           </Flex>
-        </Box>
+        </Flex>
       </LinkOverlay>
     </LinkBox>
   );

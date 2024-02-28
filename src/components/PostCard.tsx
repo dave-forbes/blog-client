@@ -29,12 +29,7 @@ const PostCard = ({
 }: PostCardProps) => {
   const smallScreen = useBreakpointValue({ base: true, lg: false });
 
-  const shortenedText = (string: string): string =>
-    string.slice(0, 95).concat("...").replace("Introduction:", "").trim();
-
   const date = new Date(createdAt);
-
-  const summary = shortenedText(text);
 
   return (
     <GridItem w="100%" h="100%">
@@ -62,7 +57,6 @@ const PostCard = ({
               </Heading>
               {!smallScreen ? (
                 <>
-                  <Text>{summary}</Text>
                   <Text>
                     <strong>{user.username}</strong> -{" "}
                     {date.toLocaleString("en-gb", {
