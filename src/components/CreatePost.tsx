@@ -4,7 +4,6 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Textarea,
   Image,
   Heading,
   Text,
@@ -18,11 +17,15 @@ import Divider from "./Divider";
 import placeholderImage from "../assets/ondra.jpeg";
 import { useNavigate, useParams } from "react-router-dom";
 import API_URL from "../utils/apiConfig";
+import { Editor } from "@tinymce/tinymce-react";
+import parse from "html-react-parser";
+import replaceElement from "../utils/replaceElement";
+import tinyMCEOptions from "../utils/tinyMCEOptions";
 
 const CreatePost = () => {
   const [postTitle, setpostTitle] = useState("Title");
   const [postText, setpostText] = useState(
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam dignissim, libero vel consectetur scelerisque, purus justo ullamcorper elit, sed commodo nisl arcu vitae purus. In hac habitasse platea dictumst. Sed nec libero a nunc luctus rutrum. Nulla facilisi. Vivamus vel justo nec sem malesuada aliquet. Integer eleifend consectetur lectus vel consectetur. Cras feugiat tincidunt enim, vel vestibulum diam iaculis at. Integer tristique ipsum vel nisl iaculis, a aliquet tortor mollis. Sed quis lorem odio. Nullam nec sapien nulla. Sed in magna tellus. Vivamus eget erat libero. Ut non purus sit amet est rhoncus tincidunt. Integer viverra risus eu enim consectetur, nec convallis nunc ultricies...."
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam dignissim, ...."
   );
   const [previewImage, setPreviewImage] = useState(`${placeholderImage}`);
   const [author, setAuthor] = useState("");
@@ -33,6 +36,11 @@ const CreatePost = () => {
   const navigate = useNavigate();
   const { postId } = useParams();
   const [loading, setLoading] = useState(true);
+  const smallScreen = useBreakpointValue({ base: true, md: false });
+  const TINY_MCE_API_KEY = import.meta.env.VITE_TINY_MCE_API_KEY;
+  const [editorValue, setEditorValue] = useState(
+    "<p>The quick brown fox jumps over the lazy dog</p>"
+  );
 
   useEffect(() => {
     if (postId) {
@@ -53,6 +61,15 @@ const CreatePost = () => {
           setpostTitle(post.title);
           setpostText(post.text);
           setPreviewImage(post.img1);
+          setDate(
+            post.createdAt.toLocaleString("en-gb", {
+              weekday: "long",
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })
+          );
+          setAuthor(post.user.username);
           setLoading(false);
         } catch (error: any) {
           setError(error.message);
@@ -108,6 +125,10 @@ const CreatePost = () => {
       }
     }
   };
+
+  useEffect(() => {
+    setEditorValue(postText);
+  });
 
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
@@ -172,8 +193,6 @@ const CreatePost = () => {
     }
   };
 
-  const smallScreen = useBreakpointValue({ base: true, md: false });
-
   if (loading) {
     return (
       <Flex justify="center" h="100vh" pt="20vh">
@@ -201,12 +220,17 @@ const CreatePost = () => {
             </FormControl>
             <FormControl id="text" isRequired>
               <FormLabel>Text</FormLabel>
-              <Textarea
-                value={postText}
-                onChange={(e) => setpostText(e.target.value)}
-                bg="white"
-                resize="none"
-                h="500px"
+              <Editor
+                apiKey={TINY_MCE_API_KEY}
+                onInit={(_evt, editor: any) => {
+                  setpostText(editor.getContent());
+                }}
+                onEditorChange={(newValue, editor) => {
+                  setEditorValue(newValue);
+                  setpostText(editor.getContent());
+                }}
+                value={editorValue}
+                init={tinyMCEOptions}
               />
             </FormControl>
             <FormControl isRequired={postId ? false : true}>
@@ -266,9 +290,7 @@ const CreatePost = () => {
               </Text>
             </Flex>
 
-            <Text fontSize="lg" whiteSpace="pre-wrap">
-              {postText && postText}
-            </Text>
+            {postText && parse(postText, { replace: replaceElement })}
           </Flex>
         </Flex>
         <Flex direction="column" maxW="60%" mx="auto" gap={5}>
