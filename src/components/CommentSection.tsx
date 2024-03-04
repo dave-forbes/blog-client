@@ -28,6 +28,7 @@ const CommentSection = ({ errorPost }: CommentSectionPros) => {
   const [commentsLoading, setCommentsLoading] = useState(true);
   const [errorComment, setErrorComment] = useState(false);
   const smallScreen = useBreakpointValue({ base: true, md: false });
+  const [commentToEdit, setCommentToEdit] = useState<CommentI>();
 
   // fetch post comments
 
@@ -59,6 +60,12 @@ const CommentSection = ({ errorPost }: CommentSectionPros) => {
     fetchComments();
   }, []);
 
+  // edit comment
+
+  const handleEditComment = (comment: CommentI) => {
+    setCommentToEdit(comment);
+  };
+
   return (
     <Flex direction="column" maxW="1200px" mx="auto" gap={5}>
       <Divider />
@@ -86,7 +93,7 @@ const CommentSection = ({ errorPost }: CommentSectionPros) => {
                     {comments.map((comment: CommentI) => (
                       <Box key={comment._id}>
                         <Divider />
-                        <Comment comment={comment} />
+                        <Comment comment={comment} onEdit={handleEditComment} />
                         <Divider />
                       </Box>
                     ))}
@@ -101,6 +108,8 @@ const CommentSection = ({ errorPost }: CommentSectionPros) => {
                 postId={postId}
                 fetchComments={fetchComments}
                 setCommentsLoading={() => setCommentsLoading(true)}
+                commentToEdit={commentToEdit}
+                cancelCommentToEdit={() => setCommentToEdit(undefined)}
               />
             ) : (
               <Flex direction="column" align="center" justify="center" gap={3}>

@@ -6,22 +6,39 @@ import {
   Textarea,
   Box,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import API_URL from "../utils/apiConfig";
+import { CommentI } from "../utils/interfaces";
 
 interface CreateCommentProps {
   postId: string | undefined;
   fetchComments: () => Promise<void>;
   setCommentsLoading: () => void;
+  commentToEdit: CommentI | undefined;
+  cancelCommentToEdit: () => void;
 }
 
 const CreateCommentForm = ({
   postId,
   fetchComments,
   setCommentsLoading,
+  commentToEdit,
+  cancelCommentToEdit,
 }: CreateCommentProps) => {
   const [error, setError] = useState<string | undefined>();
   const [commentText, setCommentText] = useState("");
+  const textareaRef = useRef<HTMLTextAreaElement>(null); // Create a ref for the textarea
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.focus();
+    }
+    if (commentToEdit) {
+      setCommentText(commentToEdit.text);
+    } else {
+      setCommentText("");
+    }
+  }, [commentToEdit]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -87,15 +104,34 @@ const CreateCommentForm = ({
         <FormControl>
           <Flex direction="column" w="300px" align="center" gap={3}>
             <Textarea
+              ref={textareaRef}
               placeholder="Write a comment"
               resize="none"
               bg="white"
               onChange={(e) => setCommentText(e.target.value)}
               value={commentText}
             ></Textarea>
-            <Button type="submit" w="50%">
-              Submit
-            </Button>
+            {commentToEdit ? (
+              <>
+                <Text>Updating comment.</Text>
+                <Flex>
+                  <Button type="submit" w="50%">
+                    Submit
+                  </Button>
+                  <Button
+                    colorScheme="red"
+                    w="50%"
+                    onClick={cancelCommentToEdit}
+                  >
+                    Cancel
+                  </Button>
+                </Flex>
+              </>
+            ) : (
+              <Button type="submit" w="50%">
+                Submit
+              </Button>
+            )}
           </Flex>
         </FormControl>
       </form>
