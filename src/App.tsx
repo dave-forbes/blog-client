@@ -7,13 +7,13 @@ function App() {
   return (
     <Box bg="lightBg">
       <Box maxW="1200px" mx="auto">
-        <Box pt="73px">
-          <Box as="section" my={10}>
-            <Header />
-          </Box>
+        <Box as="header" my={10} pt="73px">
+          <Header />
         </Box>
-        <Outlet />
-        <Box as="section" mt={10} bg="mediumBg">
+        <Box as="main">
+          <Outlet />
+        </Box>
+        <Box as="footer" mt={10} bg="mediumBg">
           <Box>
             <Footer />
           </Box>

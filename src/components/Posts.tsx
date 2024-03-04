@@ -75,7 +75,7 @@ const Posts = () => {
   }
 
   return (
-    <>
+    <Box as="section">
       <Box as="section" my={10}>
         <FeaturedPost post={featuredPost} />
       </Box>
@@ -95,7 +95,7 @@ const Posts = () => {
           ))}
         </Grid>
       </Box>
-    </>
+    </Box>
   );
 };
 

@@ -10,7 +10,7 @@ const Home = () => {
         <Box as="section" my={10}>
           <Title />
         </Box>
-        <Box as="section" my={10}>
+        <Box my={10}>
           <Divider />
         </Box>
         <Box as="section" my={10}>
