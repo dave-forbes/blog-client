@@ -66,6 +66,50 @@ const CommentSection = ({ errorPost }: CommentSectionPros) => {
     setCommentToEdit(comment);
   };
 
+  //delete comment
+
+  const handleDeleteComment = async (commentToDelete: CommentI) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(
+        `${API_URL}/comments/delete/${commentToDelete._id}`,
+        {
+          method: "DELETE",
+          mode: "cors",
+          cache: "no-cache",
+          referrerPolicy: "no-referrer",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        if (response.status === 404) {
+          throw new Error("Internal server error, please try again later.");
+        } else if (response.status === 401) {
+          throw new Error(
+            `${response.status}: Unathenticated, either not logged in or invalid login token.`
+          );
+        } else if (response.status === 403) {
+          throw new Error(
+            `${response.status}: Access forbidden, your login token was not valid.`
+          );
+        } else {
+          throw new Error(`${response.status}: Bad request.`);
+        }
+      }
+      const updatedComments = comments.filter(
+        (comment) => comment._id !== commentToDelete._id
+      );
+
+      setComments(updatedComments);
+      setErrorComment(false);
+    } catch (error) {
+      setErrorComment(true);
+    }
+  };
+
   return (
     <Flex direction="column" maxW="1200px" mx="auto" gap={5}>
       <Divider />
@@ -93,7 +137,11 @@ const CommentSection = ({ errorPost }: CommentSectionPros) => {
                     {comments.map((comment: CommentI) => (
                       <Box key={comment._id}>
                         <Divider />
-                        <Comment comment={comment} onEdit={handleEditComment} />
+                        <Comment
+                          comment={comment}
+                          onEdit={handleEditComment}
+                          onDelete={handleDeleteComment}
+                        />
                         <Divider />
                       </Box>
                     ))}
