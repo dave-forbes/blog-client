@@ -30,7 +30,7 @@ const CreateCommentForm = ({
   const textareaRef = useRef<HTMLTextAreaElement>(null); // Create a ref for the textarea
 
   useEffect(() => {
-    if (textareaRef.current) {
+    if (commentToEdit && textareaRef.current) {
       textareaRef.current.focus();
     }
     if (commentToEdit) {
