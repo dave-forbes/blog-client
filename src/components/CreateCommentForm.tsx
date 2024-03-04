@@ -50,11 +50,14 @@ const CreateCommentForm = ({
       post: postId,
     };
 
-    const token = localStorage.getItem("token");
-
     let response;
 
     try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("Unauthorized: Please log in.");
+      }
+
       if (!commentToEdit) {
         response = await fetch(`${API_URL}/comments/create`, {
           method: "POST",
@@ -87,9 +90,9 @@ const CreateCommentForm = ({
       if (!response.ok) {
         console.log(response);
         if (response.status === 400) {
-          setError("Comment text is required");
+          throw new Error("Comment text is required");
         } else if (response.status === 401) {
-          setError("Unauthorized: Please log in.");
+          throw new Error("Unauthorized: Please log in.");
         } else {
           throw new Error("Server Error");
         }
