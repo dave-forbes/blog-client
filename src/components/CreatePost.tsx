@@ -21,6 +21,7 @@ import { Editor } from "@tinymce/tinymce-react";
 import parse from "html-react-parser";
 import replaceElement from "../utils/replaceElement";
 import tinyMCEOptions from "../utils/tinyMCEOptions";
+import FetchError from "./FetchError";
 
 const CreatePost = () => {
   const [postTitle, setpostTitle] = useState("Title");
@@ -232,11 +233,7 @@ const CreatePost = () => {
               <FormHelperText>
                 {postId && "Ignore if you want to keep original image"}
               </FormHelperText>
-              {fileError && (
-                <Text textAlign="center" mt={3} color="red">
-                  {fileError}
-                </Text>
-              )}
+              {fileError && <FetchError message={fileError} />}
             </FormControl>
           </Flex>
 
@@ -286,11 +283,7 @@ const CreatePost = () => {
             <Button my={10} type="submit" colorScheme="teal">
               {postId ? "Update" : "Create"} post
             </Button>
-            {error && (
-              <Text textAlign="center" color="red">
-                {error}
-              </Text>
-            )}
+            {error && <FetchError message={error} />}
           </Flex>
         </Flex>
       </form>

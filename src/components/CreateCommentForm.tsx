@@ -9,6 +9,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import API_URL from "../utils/apiConfig";
 import { CommentI } from "../utils/interfaces";
+import FetchError from "./FetchError";
 
 interface CreateCommentProps {
   postId: string | undefined;
@@ -105,7 +106,7 @@ const CreateCommentForm = ({
             {commentToEdit && (
               <>
                 {error ? (
-                  <Text>Error: {error}</Text>
+                  <FetchError message={error} />
                 ) : (
                   <Text>Updating comment.</Text>
                 )}
@@ -128,7 +129,7 @@ const CreateCommentForm = ({
                 <Button type="submit" w="50%">
                   Submit
                 </Button>
-                {error && <Text>Error: {error}</Text>}
+                {error && <FetchError message={error} />}
               </>
             )}
           </Flex>

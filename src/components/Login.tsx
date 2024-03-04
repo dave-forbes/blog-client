@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../utils/authContext";
 import { decodeToken, isTokenValid } from "../utils/authUtils";
 import API_URL from "../utils/apiConfig";
+import FetchError from "./FetchError";
 
 const Login = () => {
   const [error, setError] = useState("");
@@ -96,11 +97,7 @@ const Login = () => {
           </Button>
         </Flex>
       </form>
-      {error && (
-        <Text textAlign="center" mt={5} color="red">
-          {error}
-        </Text>
-      )}
+      {error && <FetchError message={error} />}
     </Flex>
   );
 };

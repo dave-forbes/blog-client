@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
-import { Box, Flex, Grid, Spinner, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Grid, Spinner } from "@chakra-ui/react";
 import { PostI } from "../utils/interfaces";
 import PostCard from "./PostCard";
 import PostControls from "./PostControls";
 import API_URL from "../utils/apiConfig";
+import FetchError from "./FetchError";
 
 const PostManager = () => {
   const [posts, setPosts] = useState<PostI[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -20,25 +21,25 @@ const PostManager = () => {
           referrerPolicy: "no-referrer",
         });
         if (!response.ok) {
-          throw new Error("Failed to fetch posts");
+          throw new Error("Failed to fetch posts, please try again later.");
         }
         const data = await response.json();
 
         setPosts(data);
         setLoading(false);
-      } catch (error) {
-        setError(true);
+        setError("");
+      } catch (error: any) {
+        setError(error.message);
       }
     };
     fetchPosts();
-  }, []);
+  }, [error]);
 
   if (error) {
     return (
-      <Flex justify="center" align="center" h="100vh">
-        <Text>
-          An error occured, failed to find posts, please try again later.
-        </Text>
+      <Flex justify="center" align="center" h="50vh" direction="column" gap={3}>
+        <FetchError message={error} />
+        <Button onClick={() => setError("")}>Refresh</Button>
       </Flex>
     );
   }
@@ -57,7 +58,7 @@ const PostManager = () => {
         <Grid m="4rem 0" templateColumns="1fr" justifyItems="center">
           {posts.map((post) => (
             <Flex key={post._id} direction="column" w="100%" align="center">
-              <PostCard {...post} />
+              <PostCard post={post} />
               <PostControls posts={posts} setPosts={setPosts} post={post} />
             </Flex>
           ))}

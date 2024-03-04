@@ -4,20 +4,21 @@ import {
   useBreakpointValue,
   Flex,
   Spinner,
-  Text,
+  Button,
 } from "@chakra-ui/react";
 import PostCard from "./PostCard";
 import FeaturedPost from "./FeaturedPost";
 import { useEffect, useState } from "react";
 import { PostI, FeaturedPostI } from "../utils/interfaces";
 import API_URL from "../utils/apiConfig";
+import FetchError from "./FetchError";
 
 const Posts = () => {
   const smallScreen = useBreakpointValue({ base: true, lg: false });
   const [posts, setPosts] = useState<PostI[]>([]);
   const [featuredPost, setFeaturedPost] = useState<FeaturedPostI | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -29,7 +30,7 @@ const Posts = () => {
           referrerPolicy: "no-referrer",
         });
         if (!response.ok) {
-          throw new Error("Failed to fetch posts");
+          throw new Error("Failed to fetch posts, please try again later.");
         }
         const data = await response.json();
 
@@ -49,19 +50,18 @@ const Posts = () => {
         setPosts(filteredData);
         setFeaturedPost(featuredPost);
         setLoading(false);
-      } catch (error) {
-        setError(true);
+      } catch (error: any) {
+        setError(error.message);
       }
     };
     fetchPosts();
-  }, []);
+  }, [error]);
 
   if (error) {
     return (
-      <Flex justify="center" align="center" h="100vh">
-        <Text>
-          An error occured, failed to find posts, please try again later.
-        </Text>
+      <Flex justify="center" align="center" h="50vh" direction="column" gap={3}>
+        <FetchError message={error} />
+        <Button onClick={() => setError("")}>Refresh</Button>
       </Flex>
     );
   }

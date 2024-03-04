@@ -16,17 +16,14 @@ import { useAuth } from "../utils/authContext";
 import { useParams } from "react-router-dom";
 import API_URL from "../utils/apiConfig";
 import { useEffect, useState } from "react";
+import FetchError from "./FetchError";
 
-interface CommentSectionPros {
-  errorPost: Boolean;
-}
-
-const CommentSection = ({ errorPost }: CommentSectionPros) => {
+const CommentSection = () => {
   const { isLoggedIn } = useAuth();
   const { postId } = useParams();
   const [comments, setComments] = useState<CommentI[]>([]);
   const [commentsLoading, setCommentsLoading] = useState(true);
-  const [errorComment, setErrorComment] = useState(false);
+  const [errorComment, setErrorComment] = useState("");
   const smallScreen = useBreakpointValue({ base: true, md: false });
   const [commentToEdit, setCommentToEdit] = useState<CommentI>();
   const [errorDeleteComment, setErrorDeleteComment] = useState("");
@@ -34,32 +31,31 @@ const CommentSection = ({ errorPost }: CommentSectionPros) => {
   // fetch post comments
 
   const fetchComments = async () => {
-    if (!errorPost) {
-      try {
-        const response = await fetch(`${API_URL}/comments/${postId}`, {
-          method: "GET",
-          mode: "cors",
-          cache: "no-cache",
-          referrerPolicy: "no-referrer",
-        });
-        if (!response.ok) {
-          throw new Error("Failed to fetch comments");
-        }
-        const comments = await response.json();
-        comments.map((comment: CommentI) => {
-          comment.createdAt = new Date(comment.createdAt);
-        });
-        setComments(comments);
-        setCommentsLoading(false);
-      } catch (error) {
-        setErrorComment(true);
+    try {
+      const response = await fetch(`${API_URL}/comments/${postId}`, {
+        method: "GET",
+        mode: "cors",
+        cache: "no-cache",
+        referrerPolicy: "no-referrer",
+      });
+      if (!response.ok) {
+        throw new Error("Failed to fetch comments");
       }
+      const comments = await response.json();
+      comments.map((comment: CommentI) => {
+        comment.createdAt = new Date(comment.createdAt);
+      });
+      setComments(comments);
+      setCommentsLoading(false);
+      setErrorComment("");
+    } catch (error: any) {
+      setErrorComment(error.message);
     }
   };
 
   useEffect(() => {
     fetchComments();
-  }, [postId, errorPost]);
+  }, [postId]);
 
   // edit comment
 
@@ -123,12 +119,14 @@ const CommentSection = ({ errorPost }: CommentSectionPros) => {
         </Flex>
         {errorComment && (
           <Flex justify="center" align="center">
-            <Text>An error occured, cannot find comments.</Text>
+            <FetchError message={errorComment} />
           </Flex>
         )}
         {errorDeleteComment && (
           <Flex justify="center" align="center" direction="column">
-            <Text>Error while deleting comment: {errorDeleteComment}</Text>
+            <FetchError
+              message={`Cannot delete comment${errorDeleteComment}`}
+            />
             <Button onClick={() => setErrorDeleteComment("")}>Refresh</Button>
           </Flex>
         )}

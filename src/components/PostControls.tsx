@@ -3,6 +3,7 @@ import { PostI } from "../utils/interfaces";
 import { Dispatch, SetStateAction, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API_URL from "../utils/apiConfig";
+import FetchError from "./FetchError";
 
 interface PostControlProps {
   post: PostI;
@@ -164,11 +165,7 @@ const PostControls = ({ posts, setPosts, post }: PostControlProps) => {
           Delete
         </Button>
       </Grid>
-      {error && (
-        <Text textAlign="center" mb={5} color="red">
-          {error}
-        </Text>
-      )}
+      {error && <FetchError message={error} />}
     </>
   );
 };

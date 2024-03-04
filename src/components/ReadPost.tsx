@@ -5,6 +5,7 @@ import {
   Flex,
   useBreakpointValue,
   Spinner,
+  Button,
 } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import { PostI } from "../utils/interfaces";
@@ -13,43 +14,46 @@ import API_URL from "../utils/apiConfig";
 import replaceElement from "../utils/replaceElement";
 import parse from "html-react-parser";
 import CommentSection from "./CommentSection";
+import FetchError from "./FetchError";
 
 const ReadPost = () => {
   const [post, setPost] = useState<PostI>();
   const [postLoading, setPostLoading] = useState(true);
   const { postId } = useParams();
-  const [errorPost, setErrorPost] = useState(false);
+  const [errorPost, setErrorPost] = useState("");
   const smallScreen = useBreakpointValue({ base: true, md: false });
 
   // fetch post
 
-  useEffect(() => {
-    const fetchPost = async () => {
-      try {
-        const response = await fetch(`${API_URL}/posts/read/${postId}`, {
-          method: "GET",
-          mode: "cors",
-          cache: "no-cache",
-          referrerPolicy: "no-referrer",
-        });
-        if (!response.ok) {
-          throw new Error();
-        }
-        const post = await response.json();
-        post.createdAt = new Date(post.createdAt);
-        setPost(post);
-        setPostLoading(false);
-      } catch (error) {
-        setErrorPost(true);
+  const fetchPost = async () => {
+    try {
+      const response = await fetch(`${API_URL}/posts/read/${postId}`, {
+        method: "GET",
+        mode: "cors",
+        cache: "no-cache",
+        referrerPolicy: "no-referrer",
+      });
+      if (!response.ok) {
+        throw new Error("Failed to fetch post, please try again later.");
       }
-    };
+      const post = await response.json();
+      post.createdAt = new Date(post.createdAt);
+      setPost(post);
+      setPostLoading(false);
+    } catch (error: any) {
+      setErrorPost(error.message);
+    }
+  };
+
+  useEffect(() => {
     fetchPost();
-  }, []);
+  }, [errorPost]);
 
   if (errorPost) {
     return (
-      <Flex justify="center" align="center" h="100vh">
-        <Text>An error occured, cannot find post.</Text>
+      <Flex justify="center" align="center" h="70vh" direction="column" gap={3}>
+        <FetchError message={errorPost} />
+        <Button onClick={() => setErrorPost("")}>Refresh</Button>
       </Flex>
     );
   }
@@ -104,7 +108,7 @@ const ReadPost = () => {
           {post && parse(post.text, { replace: replaceElement })}
         </Flex>
       </Flex>
-      <CommentSection errorPost={errorPost} />
+      <CommentSection />
     </>
   );
 };

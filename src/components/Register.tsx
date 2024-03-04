@@ -1,14 +1,8 @@
 import { useState } from "react";
-import {
-  Flex,
-  FormControl,
-  FormLabel,
-  Input,
-  Button,
-  Text,
-} from "@chakra-ui/react";
+import { Flex, FormControl, FormLabel, Input, Button } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import API_URL from "../utils/apiConfig";
+import FetchError from "./FetchError";
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -46,9 +40,9 @@ const Register = () => {
           data.errors.forEach((error: any): void => {
             errorString = errorString + ", " + error.msg;
           });
-          throw new Error(`${response.status}: ${errorString.slice(1)}`);
+          throw new Error(`${response.status} ${errorString.slice(1)}`);
         } else {
-          throw new Error(`${response.status}: Server error`);
+          throw new Error(`${response.status} Server error`);
         }
       }
 
@@ -100,7 +94,7 @@ const Register = () => {
           </Button>
         </Flex>
       </form>
-      {error && <Text color="red">{error}</Text>}
+      {error && <FetchError message={error} />}
     </Flex>
   );
 };
