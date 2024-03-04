@@ -27,13 +27,11 @@ const CreateCommentForm = ({
 }: CreateCommentProps) => {
   const [error, setError] = useState<string | undefined>();
   const [commentText, setCommentText] = useState("");
-  const textareaRef = useRef<HTMLTextAreaElement>(null); // Create a ref for the textarea
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     if (commentToEdit && textareaRef.current) {
       textareaRef.current.focus();
-    }
-    if (commentToEdit) {
       setCommentText(commentToEdit.text);
     } else {
       setCommentText("");
@@ -42,7 +40,6 @@ const CreateCommentForm = ({
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("Form submitted");
 
     const formData = {
       text: commentText,
@@ -50,58 +47,40 @@ const CreateCommentForm = ({
       post: postId,
     };
 
-    let response;
-
     try {
       const token = localStorage.getItem("token");
       if (!token) {
         throw new Error("Unauthorized: Please log in.");
       }
 
-      if (!commentToEdit) {
-        response = await fetch(`${API_URL}/comments/create`, {
-          method: "POST",
-          mode: "cors",
-          cache: "no-cache",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          referrerPolicy: "no-referrer",
-          body: JSON.stringify(formData),
-        });
-      } else {
-        response = await fetch(
-          `${API_URL}/comments/update/${commentToEdit._id}`,
-          {
-            method: "PUT",
-            mode: "cors",
-            cache: "no-cache",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            referrerPolicy: "no-referrer",
-            body: JSON.stringify(formData),
-          }
-        );
-      }
+      const url = commentToEdit
+        ? `${API_URL}/comments/update/${commentToEdit._id}`
+        : `${API_URL}/comments/create`;
+
+      const response = await fetch(url, {
+        method: commentToEdit ? "PUT" : "POST",
+        mode: "cors",
+        cache: "no-cache",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        referrerPolicy: "no-referrer",
+        body: JSON.stringify(formData),
+      });
 
       if (!response.ok) {
-        console.log(response);
-        if (response.status === 400) {
-          throw new Error("Comment text is required");
-        } else if (response.status === 401) {
-          throw new Error("Unauthorized: Please log in.");
-        } else {
-          throw new Error("Server Error");
-        }
+        const errorMessage =
+          response.status === 400
+            ? "Comment text is required"
+            : response.status === 401
+            ? "Unauthorized: Please log in."
+            : "Server Error";
+        throw new Error(errorMessage);
       }
 
       setCommentsLoading();
-
       await fetchComments();
-
       setCommentText("");
       setError("");
       cancelCommentToEdit();
@@ -123,7 +102,7 @@ const CreateCommentForm = ({
               onChange={(e) => setCommentText(e.target.value)}
               value={commentText}
             ></Textarea>
-            {commentToEdit ? (
+            {commentToEdit && (
               <>
                 {error ? (
                   <Text>Error: {error}</Text>
@@ -143,10 +122,14 @@ const CreateCommentForm = ({
                   </Button>
                 </Flex>
               </>
-            ) : (
-              <Button type="submit" w="50%">
-                Submit
-              </Button>
+            )}
+            {!commentToEdit && (
+              <>
+                <Button type="submit" w="50%">
+                  Submit
+                </Button>
+                {error && <Text>Error: {error}</Text>}
+              </>
             )}
           </Flex>
         </FormControl>
