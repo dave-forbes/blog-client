@@ -1,18 +1,8 @@
 import { useEffect, useState } from "react";
-import {
-  Button,
-  Flex,
-  Text,
-  AlertDialog,
-  AlertDialogOverlay,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogBody,
-  AlertDialogFooter,
-} from "@chakra-ui/react";
+import { Button, Flex, Text } from "@chakra-ui/react";
 import { AtSignIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { CommentI } from "../utils/interfaces";
-import React from "react";
+import ConfirmModal from "./ConfirmModal";
 
 interface CommentProps {
   comment: CommentI;
@@ -23,8 +13,6 @@ interface CommentProps {
 const Comment = ({ comment, onEdit, onDelete }: CommentProps) => {
   const [user, setUser] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const onClose = () => setIsOpen(false);
-  const cancelRef = React.useRef(null);
 
   const date = new Date(comment.createdAt);
 
@@ -81,32 +69,12 @@ const Comment = ({ comment, onEdit, onDelete }: CommentProps) => {
               <Text fontSize="xs">Delete</Text>
             </Flex>
           </Button>
-          <AlertDialog
+          <ConfirmModal
             isOpen={isOpen}
-            leastDestructiveRef={cancelRef}
-            onClose={onClose}
-          >
-            <AlertDialogOverlay>
-              <AlertDialogContent>
-                <AlertDialogHeader fontSize="lg" fontWeight="bold">
-                  Delete Comment
-                </AlertDialogHeader>
-
-                <AlertDialogBody>
-                  Are you sure? You can't undo this action afterwards.
-                </AlertDialogBody>
-
-                <AlertDialogFooter>
-                  <Button ref={cancelRef} onClick={onClose}>
-                    Cancel
-                  </Button>
-                  <Button colorScheme="red" onClick={confirmDelete} ml={3}>
-                    Delete
-                  </Button>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialogOverlay>
-          </AlertDialog>
+            setIsOpen={setIsOpen}
+            confirmDelete={confirmDelete}
+            type="comment"
+          />
         </Flex>
       )}
     </Flex>
