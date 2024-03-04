@@ -8,33 +8,28 @@ import {
   LinkBox,
   LinkOverlay,
 } from "@chakra-ui/react";
-import { UserI } from "../utils/interfaces";
+import { PostI } from "../utils/interfaces";
 
 interface PostCardProps {
-  title: string;
-  text: string;
-  user: UserI;
-  createdAt: Date;
-  _id: string;
-  img1: string;
+  post: PostI;
 }
 
-const PostCard = ({ title, user, _id, createdAt, img1 }: PostCardProps) => {
+const PostCard = ({ post }: PostCardProps) => {
   const smallScreen = useBreakpointValue({ base: true, lg: false });
 
-  const date = new Date(createdAt);
+  const date = new Date(post.createdAt);
 
   return (
     <GridItem w="100%" h="100%">
       <LinkBox pos="relative">
-        <LinkOverlay href={"/posts/" + _id}>
+        <LinkOverlay href={"/posts/" + post._id}>
           <Flex
             direction="column"
             align="center"
             justify="center"
             pos="relative"
           >
-            <Image src={img1} w="100%" h="400px" objectFit="cover"></Image>
+            <Image src={post.img1} w="100%" h="400px" objectFit="cover"></Image>
             <Flex
               pos="absolute"
               bg="lightBg"
@@ -46,12 +41,12 @@ const PostCard = ({ title, user, _id, createdAt, img1 }: PostCardProps) => {
               align="center"
             >
               <Heading textAlign="center" fontSize="1.5rem">
-                {title}
+                {post.title}
               </Heading>
-              {!smallScreen ? (
+              {!smallScreen && (
                 <>
                   <Text>
-                    <strong>{user.username}</strong> -{" "}
+                    <strong>{post.user.username}</strong> -{" "}
                     {date.toLocaleString("en-gb", {
                       weekday: "long",
                       year: "numeric",
@@ -60,8 +55,6 @@ const PostCard = ({ title, user, _id, createdAt, img1 }: PostCardProps) => {
                     })}
                   </Text>
                 </>
-              ) : (
-                ""
               )}
             </Flex>
           </Flex>

@@ -91,7 +91,7 @@ const Posts = () => {
           justifyItems="center"
         >
           {posts.map((post) => (
-            <PostCard key={post._id} {...post} />
+            <PostCard key={post._id} post={post} />
           ))}
         </Grid>
       </Box>
