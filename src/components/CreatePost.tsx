@@ -143,48 +143,35 @@ const CreatePost = () => {
       formData.append("image", imageInput.files[0]);
     }
 
-    const token = localStorage.getItem("token");
-
     try {
-      let response;
-      if (postId) {
-        // update post
-        response = await fetch(`${API_URL}/posts/update/${postId}`, {
-          method: "PUT",
-          mode: "cors",
-          cache: "no-cache",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          referrerPolicy: "no-referrer",
-          body: formData,
-        });
-      } else {
-        // create new post
-        response = await fetch(`${API_URL}/posts/create`, {
-          method: "POST",
-          mode: "cors",
-          cache: "no-cache",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          referrerPolicy: "no-referrer",
-          body: formData,
-        });
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("Unauthorized: Please log in.");
       }
 
+      const url = postId
+        ? `${API_URL}/posts/update/${postId}`
+        : `${API_URL}/posts/create`;
+
+      const response = await fetch(url, {
+        method: postId ? "PUT" : "POST",
+        mode: "cors",
+        cache: "no-cache",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        referrerPolicy: "no-referrer",
+        body: formData,
+      });
+
       if (!response.ok) {
-        if (response.status === 401) {
-          throw new Error(
-            `${response.status}: Unathenticated, either not logged in or invalid login token.`
-          );
-        } else if (response.status === 403) {
-          throw new Error(
-            `${response.status}: Access forbidden, your login token was not valid.`
-          );
-        } else {
-          throw new Error(`${response.status}: Bad request.`);
-        }
+        const errorMessage =
+          response.status === 401
+            ? `${response.status}: Unauthenticated, either not logged in or invalid login token.`
+            : response.status === 403
+            ? `${response.status}: Access forbidden, your login token was not valid.`
+            : "Bad request.";
+        throw new Error(errorMessage);
       }
 
       navigate("/posts/post-manager");
