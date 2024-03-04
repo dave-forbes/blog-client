@@ -52,7 +52,7 @@ const FeaturedPost = ({ post }: FeaturedPostProps) => {
         >
           <Heading color="headerText">{post.title}</Heading>
           <Flex align="baseline" gap={5}>
-            {!smallScreen ? (
+            {!smallScreen && (
               <>
                 <Text>
                   <strong>{post.user.username}</strong> -{" "}
@@ -64,8 +64,6 @@ const FeaturedPost = ({ post }: FeaturedPostProps) => {
                   })}
                 </Text>
               </>
-            ) : (
-              ""
             )}
           </Flex>
         </Flex>
