@@ -52,9 +52,6 @@ const CreateCommentForm = ({
 
     const token = localStorage.getItem("token");
 
-    console.log(formData);
-    console.log(token);
-
     let response;
 
     try {
@@ -97,10 +94,6 @@ const CreateCommentForm = ({
           throw new Error("Server Error");
         }
       }
-
-      const data = await response.json();
-
-      console.log(data);
 
       setCommentsLoading();
 
