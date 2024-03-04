@@ -5,11 +5,16 @@ import { useEffect, useState } from "react";
 
 interface CommentProps {
   comment: CommentI;
+  onEdit: (comment: CommentI) => void;
 }
 
-const Comment = ({ comment }: CommentProps) => {
+const Comment = ({ comment, onEdit }: CommentProps) => {
   const [user, setUser] = useState("");
   const date = new Date(comment.createdAt);
+
+  const handleEdit = () => {
+    onEdit(comment);
+  };
 
   useEffect(() => {
     const userId = localStorage.getItem("userId");
@@ -39,7 +44,7 @@ const Comment = ({ comment }: CommentProps) => {
       <Text>{comment.text}</Text>
       {user == comment.user._id && (
         <Flex justify="flex-end" gap={10}>
-          <Button size="xs" colorScheme="teal">
+          <Button size="xs" colorScheme="teal" onClick={handleEdit}>
             <Flex gap={3} align="center">
               <EditIcon boxSize={4} />
               <Text fontSize="xs">Edit</Text>
