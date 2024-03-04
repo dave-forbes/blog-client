@@ -4,6 +4,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API_URL from "../utils/apiConfig";
 import FetchError from "./FetchError";
+import ConfirmModal from "./ConfirmModal";
 
 interface PostControlProps {
   post: PostI;
@@ -14,6 +15,8 @@ interface PostControlProps {
 const PostControls = ({ posts, setPosts, post }: PostControlProps) => {
   const [error, setError] = useState("");
   const smallScreen = useBreakpointValue({ base: true, md: false });
+  const [isOpen, setIsOpen] = useState(false);
+  const [commentToDelete, setCommentToDelete] = useState("");
 
   const handlePublish = async (id: string) => {
     try {
@@ -92,10 +95,19 @@ const PostControls = ({ posts, setPosts, post }: PostControlProps) => {
     navigate(`/posts/create-post/${id}`);
   };
 
-  const token = localStorage.getItem("token");
+  const handleDeleteClick = (id: string) => {
+    setIsOpen(true);
+    setCommentToDelete(id);
+  };
+
+  const confirmDelete = () => handleDelete(commentToDelete);
 
   const handleDelete = async (id: string) => {
     try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("Unauthorized: Please log in.");
+      }
       const response = await fetch(`${API_URL}/posts/delete/${id}`, {
         method: "DELETE",
         mode: "cors",
@@ -161,11 +173,17 @@ const PostControls = ({ posts, setPosts, post }: PostControlProps) => {
         <Button onClick={() => handleEdit(post._id)} colorScheme="blue">
           Edit
         </Button>
-        <Button onClick={() => handleDelete(post._id)} colorScheme="red">
+        <Button onClick={() => handleDeleteClick(post._id)} colorScheme="red">
           Delete
         </Button>
       </Grid>
       {error && <FetchError message={error} />}
+      <ConfirmModal
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        confirmDelete={confirmDelete}
+        type="post"
+      />
     </>
   );
 };
