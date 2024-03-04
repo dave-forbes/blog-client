@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import Divider from "./Divider";
-import placeholderImage from "../assets/ondra.jpeg";
+import placeholderImage from "../assets/dog-laptop-landscape-laptop.jpg";
 import { useNavigate, useParams } from "react-router-dom";
 import API_URL from "../utils/apiConfig";
 import { Editor } from "@tinymce/tinymce-react";
