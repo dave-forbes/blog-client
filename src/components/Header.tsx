@@ -7,6 +7,7 @@ import {
   useBreakpointValue,
   Heading,
   Link,
+  Collapse,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import Divider from "./Divider";
@@ -113,17 +114,9 @@ function Header() {
             )}
           </Box>
         )}
-
-        <Flex
-          align="center"
-          w="100%"
-          gap={5}
-          direction="column"
-          transition="0.2s"
-          m={isOpen ? 5 : 0}
-          height={isOpen ? "200px" : "0"}
-          opacity={isOpen ? 1 : 0}
-        >
+      </Flex>
+      <Collapse in={isOpen} animateOpacity>
+        <Flex align="center" w="100%" gap={5} direction="column" py={5}>
           {isLoggedIn ? (
             <Flex align="center" gap={5} direction="column">
               <p>Welcome back, {username}</p>
@@ -154,7 +147,8 @@ function Header() {
             </>
           )}
         </Flex>
-      </Flex>
+      </Collapse>
+
       <Divider />
     </Box>
   );
