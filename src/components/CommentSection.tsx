@@ -64,7 +64,7 @@ const CommentSection = ({ errorPost }: CommentSectionPros) => {
       <Divider />
       <Flex
         w={smallScreen ? "100%" : "70%"}
-        p={5}
+        p={smallScreen ? 1 : 5}
         mx="auto"
         justify="center"
         direction="column"
