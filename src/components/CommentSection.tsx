@@ -29,6 +29,7 @@ const CommentSection = ({ errorPost }: CommentSectionPros) => {
   const [errorComment, setErrorComment] = useState(false);
   const smallScreen = useBreakpointValue({ base: true, md: false });
   const [commentToEdit, setCommentToEdit] = useState<CommentI>();
+  const [errorDeleteComment, setErrorDeleteComment] = useState("");
 
   // fetch post comments
 
@@ -58,7 +59,7 @@ const CommentSection = ({ errorPost }: CommentSectionPros) => {
 
   useEffect(() => {
     fetchComments();
-  }, []);
+  }, [postId, errorPost]);
 
   // edit comment
 
@@ -85,28 +86,24 @@ const CommentSection = ({ errorPost }: CommentSectionPros) => {
       );
 
       if (!response.ok) {
-        if (response.status === 404) {
-          throw new Error("Internal server error, please try again later.");
-        } else if (response.status === 401) {
-          throw new Error(
-            `${response.status}: Unathenticated, either not logged in or invalid login token.`
-          );
-        } else if (response.status === 403) {
-          throw new Error(
-            `${response.status}: Access forbidden, your login token was not valid.`
-          );
-        } else {
-          throw new Error(`${response.status}: Bad request.`);
-        }
+        throw new Error(
+          response.status === 404
+            ? "Internal server error, please try again later."
+            : response.status === 401
+            ? `${response.status}: Unauthenticated, either not logged in or invalid login token.`
+            : response.status === 403
+            ? `${response.status}: Access forbidden, your login token was not valid.`
+            : `${response.status}: Bad request.`
+        );
       }
       const updatedComments = comments.filter(
         (comment) => comment._id !== commentToDelete._id
       );
 
       setComments(updatedComments);
-      setErrorComment(false);
-    } catch (error) {
-      setErrorComment(true);
+      setErrorDeleteComment("");
+    } catch (error: any) {
+      setErrorDeleteComment(error.message);
     }
   };
 
@@ -124,7 +121,18 @@ const CommentSection = ({ errorPost }: CommentSectionPros) => {
         <Flex direction="column" align="center" justify="center" gap={1}>
           <Heading fontSize="3xl">Comments</Heading>
         </Flex>
-        {!errorComment ? (
+        {errorComment && (
+          <Flex justify="center" align="center">
+            <Text>An error occured, cannot find comments.</Text>
+          </Flex>
+        )}
+        {errorDeleteComment && (
+          <Flex justify="center" align="center" direction="column">
+            <Text>Error while deleting comment: {errorDeleteComment}</Text>
+            <Button onClick={() => setErrorDeleteComment("")}>Refresh</Button>
+          </Flex>
+        )}
+        {!errorComment && !errorDeleteComment && (
           <>
             {commentsLoading ? (
               <Flex justify="center" align="center" h="10vh">
@@ -166,12 +174,8 @@ const CommentSection = ({ errorPost }: CommentSectionPros) => {
                   <Button>Log in</Button>
                 </Link>
               </Flex>
-            )}{" "}
+            )}
           </>
-        ) : (
-          <Flex justify="center" align="center" h="100vh">
-            <Text>An error occured, cannot find comments.</Text>
-          </Flex>
         )}
       </Flex>
     </Flex>
