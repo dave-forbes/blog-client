@@ -1,4 +1,4 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Button, Flex, Text } from "@chakra-ui/react";
 import { AtSignIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { CommentI } from "../utils/interfaces";
 import { useEffect, useState } from "react";
@@ -17,7 +17,7 @@ const Comment = ({ comment }: CommentProps) => {
   });
 
   return (
-    <Flex p={5} direction="column" gap={2}>
+    <Flex p={5} direction="column" gap={3}>
       <Flex justify="space-between" align="center">
         <Flex align="center" gap={1}>
           <AtSignIcon />
@@ -34,15 +34,25 @@ const Comment = ({ comment }: CommentProps) => {
               day: "numeric",
             })}
           </Text>
-          {user == comment.user._id && (
-            <Flex gap={3}>
-              <DeleteIcon boxSize={6} />
-              <EditIcon boxSize={6} />
-            </Flex>
-          )}
         </Flex>
       </Flex>
       <Text>{comment.text}</Text>
+      {user == comment.user._id && (
+        <Flex justify="flex-end" gap={10}>
+          <Button size="xs" colorScheme="teal">
+            <Flex gap={3} align="center">
+              <EditIcon boxSize={4} />
+              <Text fontSize="xs">Edit</Text>
+            </Flex>
+          </Button>
+          <Button size="xs" colorScheme="red">
+            <Flex gap={3} align="center">
+              <DeleteIcon boxSize={4} />
+              <Text fontSize="xs">Delete</Text>
+            </Flex>
+          </Button>
+        </Flex>
+      )}
     </Flex>
   );
 };
