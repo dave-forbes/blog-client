@@ -55,28 +55,47 @@ const CreateCommentForm = ({
     console.log(formData);
     console.log(token);
 
+    let response;
+
     try {
-      const response = await fetch(`${API_URL}/comments/create`, {
-        method: "POST",
-        mode: "cors",
-        cache: "no-cache",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        referrerPolicy: "no-referrer",
-        body: JSON.stringify(formData),
-      });
+      if (!commentToEdit) {
+        response = await fetch(`${API_URL}/comments/create`, {
+          method: "POST",
+          mode: "cors",
+          cache: "no-cache",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          referrerPolicy: "no-referrer",
+          body: JSON.stringify(formData),
+        });
+      } else {
+        response = await fetch(
+          `${API_URL}/comments/update/${commentToEdit._id}`,
+          {
+            method: "PUT",
+            mode: "cors",
+            cache: "no-cache",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            referrerPolicy: "no-referrer",
+            body: JSON.stringify(formData),
+          }
+        );
+      }
 
       if (!response.ok) {
-        if (response.status === 401) {
+        console.log(response);
+        if (response.status === 400) {
+          setError("Comment text is required");
+        } else if (response.status === 401) {
           setError("Unauthorized: Please log in.");
         } else {
-          const data = await response.json();
-          console.log(data);
-          setError(data.message);
+          throw new Error("Server Error");
         }
-        throw new Error("Server Error");
       }
 
       const data = await response.json();
@@ -88,15 +107,12 @@ const CreateCommentForm = ({
       await fetchComments();
 
       setCommentText("");
-    } catch (error) {
-      console.error("There was a problem with the fetch operation:", error);
-      setError("An error occurred while processing your request.");
+      setError("");
+      cancelCommentToEdit();
+    } catch (error: any) {
+      setError(error.message);
     }
   };
-
-  if (error) {
-    return <Text>An error occurred: {error}</Text>;
-  }
 
   return (
     <Box alignSelf="center">
@@ -113,8 +129,12 @@ const CreateCommentForm = ({
             ></Textarea>
             {commentToEdit ? (
               <>
-                <Text>Updating comment.</Text>
-                <Flex>
+                {error ? (
+                  <Text>Error: {error}</Text>
+                ) : (
+                  <Text>Updating comment.</Text>
+                )}
+                <Flex gap={5}>
                   <Button type="submit" w="50%">
                     Submit
                   </Button>
