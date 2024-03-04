@@ -1,4 +1,4 @@
-import { Button, Grid, Text, useBreakpointValue } from "@chakra-ui/react";
+import { Button, Grid, useBreakpointValue } from "@chakra-ui/react";
 import { PostI } from "../utils/interfaces";
 import { Dispatch, SetStateAction, useState } from "react";
 import { useNavigate } from "react-router-dom";

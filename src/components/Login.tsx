@@ -1,12 +1,5 @@
 import { useState } from "react";
-import {
-  Flex,
-  FormControl,
-  FormLabel,
-  Input,
-  Button,
-  Text,
-} from "@chakra-ui/react";
+import { Flex, FormControl, FormLabel, Input, Button } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../utils/authContext";
 import { decodeToken, isTokenValid } from "../utils/authUtils";
