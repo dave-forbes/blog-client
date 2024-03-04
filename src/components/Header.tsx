@@ -113,39 +113,47 @@ function Header() {
             )}
           </Box>
         )}
-        {isOpen && (
-          <Flex align="center" w="100%" gap={5} direction="column" m={5}>
-            {isLoggedIn ? (
-              <Flex align="center" gap={5} direction="column">
-                <p>Welcome back, {username}</p>
-                {author && (
-                  <>
-                    <Link href="/posts/create-post">
-                      <Button colorScheme="teal"> Create post </Button>
-                    </Link>
-                    <Link href="/posts/post-manager">
-                      <Button colorScheme="purple"> Post Mananger </Button>
-                    </Link>
-                  </>
-                )}
-                <Button onClick={handleLogout} colorScheme="blue">
-                  Logout
+
+        <Flex
+          align="center"
+          w="100%"
+          gap={5}
+          direction="column"
+          transition="0.2s"
+          m={isOpen ? 5 : 0}
+          height={isOpen ? "200px" : "0"}
+          opacity={isOpen ? 1 : 0}
+        >
+          {isLoggedIn ? (
+            <Flex align="center" gap={5} direction="column">
+              <p>Welcome back, {username}</p>
+              {author && (
+                <>
+                  <Link href="/posts/create-post">
+                    <Button colorScheme="teal"> Create post </Button>
+                  </Link>
+                  <Link href="/posts/post-manager">
+                    <Button colorScheme="purple"> Post Mananger </Button>
+                  </Link>
+                </>
+              )}
+              <Button onClick={handleLogout} colorScheme="blue">
+                Logout
+              </Button>
+            </Flex>
+          ) : (
+            <>
+              <Link href="/register" textAlign="center">
+                <Button colorScheme="blue" variant="outline">
+                  Sign Up
                 </Button>
-              </Flex>
-            ) : (
-              <>
-                <Link href="/register" textAlign="center">
-                  <Button colorScheme="blue" variant="outline">
-                    Sign Up
-                  </Button>
-                </Link>
-                <Link href="/log-in" w="50%" textAlign="center">
-                  <Button colorScheme="blue">Login</Button>
-                </Link>
-              </>
-            )}
-          </Flex>
-        )}
+              </Link>
+              <Link href="/log-in" w="50%" textAlign="center">
+                <Button colorScheme="blue">Login</Button>
+              </Link>
+            </>
+          )}
+        </Flex>
       </Flex>
       <Divider />
     </Box>
