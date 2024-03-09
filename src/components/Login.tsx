@@ -1,5 +1,13 @@
 import { useState } from "react";
-import { Flex, FormControl, FormLabel, Input, Button } from "@chakra-ui/react";
+import {
+  Flex,
+  FormControl,
+  FormLabel,
+  Input,
+  Button,
+  Text,
+  Link,
+} from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../utils/authContext";
 import { decodeToken, isTokenValid } from "../utils/authUtils";
@@ -88,6 +96,12 @@ const Login = () => {
           <Button type="submit" colorScheme="teal" mt={4}>
             Login
           </Button>
+          <Text mt={5}>
+            Dont have an account?{" "}
+            <Link color="blue" href="/register">
+              Sign up
+            </Link>
+          </Text>
         </Flex>
       </form>
       {error && <FetchError message={error} />}
